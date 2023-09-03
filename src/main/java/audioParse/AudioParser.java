@@ -43,6 +43,7 @@ public class AudioParser {
 		while ((bytesRead = audioInputStream.read(buffer)) != -1) {
 //			sourceDataLine.write(buffer, 0, bytesRead); play uncomment here
 			fileIOManager.write(buffer[0], outputFile, appendflag);
+			appendflag = true;
 		}
 
 		fileIOManager.write(".", outputFile, appendflag);

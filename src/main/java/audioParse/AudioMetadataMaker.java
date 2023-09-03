@@ -50,25 +50,29 @@ public class AudioMetadataMaker {
 		return outputFiles = fileIOManager.chooseFolder(display);
 	}
 
-	public void builder(final Shell shell) {
+	public void builder(final MessageBox msg) {
 
 		Thread thread = new Thread() {
+			boolean appendflag = false;
+
 			public void run() {
-				for (String object : inputFiles) {
-					AudioParser audioParser = new AudioParser();
-					boolean appendflag = false;
-					appendflag = true;
+				for (String inputFile : inputFiles) {
 					try {
-						audioParser.parseToPlainText(appendflag, fileIOManager, object, outputFiles);
+						audioParser.parseToPlainText(appendflag, fileIOManager, inputFile, outputFiles);
 					} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}
 
-				MessageBox msg = new MessageBox(shell, SWT.ICON_WARNING | SWT.ABORT | SWT.RETRY | SWT.IGNORE);
+					appendflag = true;
+					System.out.println("complete...");
+				}
 				msg.setMessage("build complete");
-				msg.open();
+				Display.getDefault().asyncExec(new Runnable() {
+					public void run() {
+						msg.open();
+					}
+				});
 			}
 		};
 		thread.start();

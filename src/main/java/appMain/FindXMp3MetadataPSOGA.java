@@ -17,6 +17,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Spinner;
@@ -33,6 +34,7 @@ public class FindXMp3MetadataPSOGA {
 	private Text text_1;
 	private Text text_2;
 	static AudioMetadataMaker audioMetadataMaker;
+	MessageBox msg;
 
 	/**
 	 * Launch the application.
@@ -79,6 +81,7 @@ public class FindXMp3MetadataPSOGA {
 		shlAudiopaser.setSize(628, 347);
 		shlAudiopaser.setText("AudioPaser");
 		shlAudiopaser.setLayout(new GridLayout(3, false));
+		msg = new MessageBox(shlAudiopaser, SWT.OK);
 
 		Label lblInput = new Label(shlAudiopaser, SWT.NONE);
 		lblInput.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -128,7 +131,7 @@ public class FindXMp3MetadataPSOGA {
 		btnAudioToMetadata.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				audioMetadataMaker.builder(shlAudiopaser);
+				audioMetadataMaker.builder(msg);
 			}
 		});
 		btnAudioToMetadata.setText("Audio to Metadata");
