@@ -14,13 +14,12 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.Line.Info;
 import javax.sound.sampled.LineUnavailableException;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
 public class AudioParser {
 
-	public void parseToPlainText(boolean flag, String inputFiles, String outputFile)
+	public void parseToPlainText(boolean appendflag, FileIOManager fileIOManager, String inputFiles, String outputFile)
 			throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		// Name string uses relative addressing, assumes the resource is
 		// located in "audio" child folder of folder holding this class.
@@ -34,18 +33,19 @@ public class AudioParser {
 		AudioFormat audioFormat = fileFormat.getFormat();
 		Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
 		SourceDataLine sourceDataLine = (SourceDataLine) AudioSystem.getLine(info);
-		sourceDataLine.open(audioFormat);
+		final int bufferSize = 2200; // in Byte
+		sourceDataLine.open(audioFormat, bufferSize);
 
 		int bytesRead = 0;
-		int bytesWritten = 0;
 		byte[] buffer = new byte[1024];
 		sourceDataLine.start();
+
 		while ((bytesRead = audioInputStream.read(buffer)) != -1) {
-			// It is possible at this point manipulate the data in buffer[].
-			// The write operation blocks while the system plays the sound.
-			bytesWritten = sourceDataLine.write(buffer, 0, bytesRead);
-			System.out.println("... -->" + buffer[0] + " bytesWritten:" + bytesWritten);
+//			sourceDataLine.write(buffer, 0, bytesRead); play uncomment here
+			fileIOManager.write(buffer[0], outputFile, appendflag);
 		}
+
+		fileIOManager.write(".", outputFile, appendflag);
 		sourceDataLine.drain();
 		// release resources
 		sourceDataLine.close();

@@ -128,12 +128,7 @@ public class FindXMp3MetadataPSOGA {
 		btnAudioToMetadata.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				try {
-					audioMetadataMaker.builder();
-				} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				audioMetadataMaker.builder(shlAudiopaser);
 			}
 		});
 		btnAudioToMetadata.setText("Audio to Metadata");

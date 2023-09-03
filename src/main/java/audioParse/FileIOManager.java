@@ -1,6 +1,8 @@
 package audioParse;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
@@ -39,5 +41,17 @@ public class FileIOManager {
 		System.out.println(path);
 		shell.dispose();
 		return path;
+	}
+
+	public void write(int bytesWritten, String outputFile, boolean appendflag) throws IOException {
+		FileWriter myWriter = new FileWriter(outputFile + "\\metadata.txt", appendflag);
+		myWriter.write(bytesWritten + ",");
+		myWriter.close();
+	}
+
+	public void write(String string, String outputFile, boolean appendflag) throws IOException {
+		FileWriter myWriter = new FileWriter(outputFile + "\\metadata.txt", appendflag);
+		myWriter.write(string + ".");
+		myWriter.close();
 	}
 }
