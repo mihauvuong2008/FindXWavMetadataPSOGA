@@ -19,8 +19,9 @@ import java.io.FileInputStream;
 
 public class AudioParser {
 
-	public void parseToPlainText(boolean appendflag, FileIOManager fileIOManager, String inputFiles, String outputFile)
+	public String parseToPlainText(boolean appendflag, FileIOManager fileIOManager, String inputFiles, String outputFile)
 			throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+		String result = null;
 		// Name string uses relative addressing, assumes the resource is
 		// located in "audio" child folder of folder holding this class.
 		File file = new File(inputFiles);
@@ -42,7 +43,11 @@ public class AudioParser {
 
 		while ((bytesRead = audioInputStream.read(buffer)) != -1) {
 //			sourceDataLine.write(buffer, 0, bytesRead); play uncomment here
-			fileIOManager.write(buffer[0], outputFile, appendflag);
+			if (appendflag) {
+				fileIOManager.write(buffer[0], outputFile, appendflag);
+				continue;
+			}
+			result = fileIOManager.write(buffer[0], outputFile, appendflag);
 			appendflag = true;
 		}
 
@@ -51,6 +56,7 @@ public class AudioParser {
 		// release resources
 		sourceDataLine.close();
 		audioInputStream.close();
+		return result;
 	}
 
 	public AudioInputStream getAudioInputStream(File file) throws UnsupportedAudioFileException, IOException {

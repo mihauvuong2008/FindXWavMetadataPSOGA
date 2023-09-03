@@ -33,6 +33,28 @@ public class FileIOManager {
 		return files;
 	}
 
+	public String chooseSingleFile(Display display) {
+		final Shell shell = new Shell(display);
+
+		ArrayList<String> files = new ArrayList<>();
+		FileDialog dlg = new FileDialog(shell, SWT.OPEN);
+		if (dlg.open() != null) {
+			String[] names = dlg.getFileNames();
+			for (int i = 0, n = names.length; i < n; i++) {
+				StringBuffer buf = new StringBuffer(dlg.getFilterPath());
+				if (buf.charAt(buf.length() - 1) != File.separatorChar)
+					buf.append(File.separatorChar);
+				buf.append(names[i]);
+				files.add(dlg.getFilterPath() + "\\" + names[i]);
+			}
+		}
+		System.out.println(files);
+		shell.dispose();
+		if (files.size() > 0)
+			return files.get(0);
+		return null;
+	}
+
 	public String chooseFolder(Display display) {
 		final Shell shell = new Shell(display);
 		DirectoryDialog dialog = new DirectoryDialog(shell);
@@ -43,10 +65,11 @@ public class FileIOManager {
 		return path;
 	}
 
-	public void write(int bytesWritten, String outputFile, boolean appendflag) throws IOException {
+	public String write(int bytesWritten, String outputFile, boolean appendflag) throws IOException {
 		FileWriter myWriter = new FileWriter(outputFile + "\\metadata.txt", appendflag);
 		myWriter.write(bytesWritten + ",");
 		myWriter.close();
+		return outputFile + "\\metadata.txt";
 	}
 
 	public void write(String string, String outputFile, boolean appendflag) throws IOException {
