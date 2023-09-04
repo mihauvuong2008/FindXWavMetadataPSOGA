@@ -2,7 +2,7 @@ package pso_network.training;
 
 import org.apache.log4j.Logger;
 
-import appMain.FindZeroInout;
+import appMain.FindXWavInout;
 import appMain.GA_PSO_InOutForm;
 import pso_network.Space;
 
@@ -44,6 +44,6 @@ public class PSO_InOut {
 	}
 
 	static public double y(double x) {
-		return FindZeroInout.y(upgrade + x);
+		return FindXWavInout.y(upgrade + x);
 	}
 }

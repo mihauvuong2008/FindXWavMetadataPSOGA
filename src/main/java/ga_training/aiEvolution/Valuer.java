@@ -1,6 +1,8 @@
 package ga_training.aiEvolution;
 
-import appMain.FindZeroInout;
+import java.util.ArrayList;
+
+import appMain.FindXWavInout;
 import ga_training.GENE;
 import genetoPhenotypic.BinnaryGentoPhenotypic;
 
@@ -52,16 +54,23 @@ public class Valuer {
 		return upgradeLen;
 	}
 
+	public final double getValue(GENE g, ArrayList<Double> metadata) {
+		double dNAres = BinnaryGentoPhenotypic.convertFromBinaryToNegativeDec(g.getGene());
+		double x = FindXWavInout.getUpgradedx(upgrade, upgradeLen, dNAres);
+		double y = FindXWavInout.y(x);
+		return FindXWavInout.getTotalError(metadata, getValueLevel(), y);
+	}
+
 	public final double getValue(GENE g) {
 		double dNAres = BinnaryGentoPhenotypic.convertFromBinaryToNegativeDec(g.getGene());
-		double x = FindZeroInout.getUpgradedx(upgrade, upgradeLen, dNAres);
-		double y = FindZeroInout.y(x);
-		return FindZeroInout.getUpgradedy(getValueLevel(), y);
+		double x = FindXWavInout.getUpgradedx(upgrade, upgradeLen, dNAres);
+		double y = FindXWavInout.y(x);
+		return FindXWavInout.getUpgradedy(getValueLevel(), y);
 	}
 
 	public final double getpartnerValue(double x) {
-		double y = FindZeroInout.y(x);
-		return FindZeroInout.getUpgradedy(getValueLevel(), y);
+		double y = FindXWavInout.y(x);
+		return FindXWavInout.getUpgradedy(getValueLevel(), y);
 	}
 
 	@SuppressWarnings("unused")

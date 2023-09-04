@@ -17,6 +17,8 @@ public class AudioMetadataMaker {
 	ArrayList<String> inputFiles;
 	private String outputDir;
 	private String RawPathfile;
+	ArrayList<ArrayList<Double>> smootherData;
+	ArrayList<Double> filterData;
 
 	public AudioMetadataMaker() {
 		fileIOManager = new FileIOManager();
@@ -54,6 +56,7 @@ public class AudioMetadataMaker {
 	}
 
 	public void builder(final MessageBox msg) {
+		final String FilePath = outputDir + "\\rawMetadata.txt";
 
 		Thread thread = new Thread() {
 			boolean appendflag = false;
@@ -62,7 +65,7 @@ public class AudioMetadataMaker {
 				if (inputFiles != null) {
 					for (String inputFile : inputFiles) {
 						try {
-							RawPathfile = audioParser.parseToPlainText(appendflag, fileIOManager, inputFile, outputDir);
+							RawPathfile = audioParser.parseToPlainText(appendflag, fileIOManager, inputFile, FilePath);
 						} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -92,4 +95,40 @@ public class AudioMetadataMaker {
 		return RawPathfile;
 	}
 
+	public void smooth(String rawFile, Display display) throws IOException {
+		smootherData = smoother.smooth(rawFile);
+		String outputSmooth = fileIOManager.chooseFolder(display);
+		if (outputSmooth != null) {
+			String fullPath = fileIOManager.createFile(outputSmooth, "smoothData");
+			for (ArrayList<Double> arrayList : smootherData) {
+				for (Double ele : arrayList) {
+					fileIOManager.writeline(String.valueOf(ele), fullPath, true);
+				}
+			}
+		}
+	}
+
+	public void filter(int filterRange, Display display) {
+		ArrayList<Double> smoothData = new ArrayList<>();
+		if (smootherData == null) {
+			String smootherDataFile = fileIOManager.chooseSingleFile(display);
+			if (smootherDataFile == null)
+				return;
+			smoothData = fileIOManager.readLineSmoothData(smootherDataFile);
+			filterData = filter.filter(smoothData, filterRange, display);
+			return;
+		}
+
+		for (ArrayList<Double> data : smootherData) {
+			for (Double ele : data) {
+				smoothData.add(ele);
+			}
+		}
+
+		filterData = filter.filter(smoothData, filterRange, display);
+	}
+
+	public ArrayList<Double> getMetadata() {
+		return filterData;
+	}
 }

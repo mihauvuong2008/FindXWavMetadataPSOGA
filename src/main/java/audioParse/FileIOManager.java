@@ -1,6 +1,9 @@
 package audioParse;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,15 +69,48 @@ public class FileIOManager {
 	}
 
 	public String write(int bytesWritten, String outputFile, boolean appendflag) throws IOException {
-		FileWriter myWriter = new FileWriter(outputFile + "\\metadata.txt", appendflag);
+		FileWriter myWriter = new FileWriter(outputFile, appendflag);
 		myWriter.write(bytesWritten + ",");
 		myWriter.close();
-		return outputFile + "\\metadata.txt";
+		return outputFile;
 	}
 
 	public void write(String string, String outputFile, boolean appendflag) throws IOException {
-		FileWriter myWriter = new FileWriter(outputFile + "\\metadata.txt", appendflag);
+		FileWriter myWriter = new FileWriter(outputFile, appendflag);
 		myWriter.write(string + ".");
 		myWriter.close();
 	}
+
+	public String createFile(String outputDir, String fileName) throws IOException {
+		String rs = outputDir + "\\" + fileName + ".txt";
+		FileWriter myWriter = new FileWriter(rs);
+		myWriter.close();
+		return rs;
+	}
+
+	public void writeline(String string, String outputFileFullName, boolean appendflag) throws IOException {
+		FileWriter myWriter = new FileWriter(outputFileFullName, appendflag);
+		myWriter.write(string);
+		myWriter.write(System.getProperty("line.separator"));
+		myWriter.close();
+	}
+
+	public ArrayList<Double> readLineSmoothData(String smootherDataFile) {
+		try {
+			ArrayList<Double> rs = new ArrayList<>();
+			@SuppressWarnings("resource")
+			BufferedReader bufferreader = new BufferedReader(new FileReader(smootherDataFile));
+			String line;
+			while ((line = bufferreader.readLine()) != null) {
+				rs.add(Double.valueOf(line));
+			}
+			return rs;
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
 }

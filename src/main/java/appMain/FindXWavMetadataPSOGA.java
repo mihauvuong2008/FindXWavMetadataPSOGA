@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.DisposeEvent;
 
-public class FindXMp3MetadataPSOGA {
+public class FindXWavMetadataPSOGA {
 
 	protected Shell shlAudiopaser;
 	private Text text;
@@ -44,7 +44,7 @@ public class FindXMp3MetadataPSOGA {
 	 */
 	public static void main(String[] args) {
 		try {
-			FindXMp3MetadataPSOGA window = new FindXMp3MetadataPSOGA();
+			FindXWavMetadataPSOGA window = new FindXWavMetadataPSOGA();
 			audioMetadataMaker = new AudioMetadataMaker();
 			window.open();
 		} catch (Exception e) {
@@ -77,11 +77,11 @@ public class FindXMp3MetadataPSOGA {
 				System.exit(0);
 			}
 		});
-		shlAudiopaser.setImage(SWTResourceManager.getImage(FindXMp3MetadataPSOGA.class,
+		shlAudiopaser.setImage(SWTResourceManager.getImage(FindXWavMetadataPSOGA.class,
 				"/org/apache/log4j/lf5/viewer/images/channelexplorer_satellite.gif"));
-		shlAudiopaser.setSize(628, 347);
+		shlAudiopaser.setSize(700, 430);
 		shlAudiopaser.setText("AudioPaser");
-		shlAudiopaser.setLayout(new GridLayout(4, false));
+		shlAudiopaser.setLayout(new GridLayout(5, false));
 		msg = new MessageBox(shlAudiopaser, SWT.OK);
 
 		Label lblInput = new Label(shlAudiopaser, SWT.NONE);
@@ -108,6 +108,21 @@ public class FindXMp3MetadataPSOGA {
 		});
 		btnChooseFile.setText("Choose File");
 
+		Button btnAudioToMetadata = new Button(shlAudiopaser, SWT.NONE);
+		btnAudioToMetadata.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, false, false, 1, 2));
+		btnAudioToMetadata.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				audioMetadataMaker.builder(msg);
+				String path = audioMetadataMaker.getOutputFiles();
+				if (path != null) {
+					text_rawdata.setText(path);
+				}
+
+			}
+		});
+		btnAudioToMetadata.setText("Start parse Audio ToPlainText");
+
 		Label lblOutput = new Label(shlAudiopaser, SWT.NONE);
 		lblOutput.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
 		lblOutput.setText("output: ");
@@ -131,7 +146,7 @@ public class FindXMp3MetadataPSOGA {
 		lblRawDataPath.setText("raw data path: ");
 
 		text_rawdata = new Text(shlAudiopaser, SWT.BORDER);
-		text_rawdata.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		text_rawdata.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 		Button btnSetPath = new Button(shlAudiopaser, SWT.NONE);
 		btnSetPath.addSelectionListener(new SelectionAdapter() {
@@ -143,21 +158,7 @@ public class FindXMp3MetadataPSOGA {
 				}
 			}
 		});
-		btnSetPath.setText("set path");
-
-		Button btnAudioToMetadata = new Button(shlAudiopaser, SWT.NONE);
-		btnAudioToMetadata.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				audioMetadataMaker.builder(msg);
-				String path = audioMetadataMaker.getOutputFiles();
-				if (path != null) {
-					text_rawdata.setText(path);
-				}
-
-			}
-		});
-		btnAudioToMetadata.setText("Audio to Metadata");
+		btnSetPath.setText("Set Available Plained text");
 
 		Label lblSmoothLevel = new Label(shlAudiopaser, SWT.NONE);
 		lblSmoothLevel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -165,21 +166,50 @@ public class FindXMp3MetadataPSOGA {
 
 		Spinner spinner = new Spinner(shlAudiopaser, SWT.BORDER);
 		spinner.setMinimum(1);
-		spinner.setSelection(30);
+		spinner.setSelection(10);
 		new Label(shlAudiopaser, SWT.NONE);
 
 		Button btnSmoothMetadata = new Button(shlAudiopaser, SWT.NONE);
+		btnSmoothMetadata.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnSmoothMetadata.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String rawFile = audioMetadataMaker.getRawPathfile();
 				if (rawFile != null) {
 					System.out.println("rawFile: " + rawFile);
-					audioMetadataMaker.getSmoother().smooth(rawFile);
+					try {
+						audioMetadataMaker.smooth(rawFile, Display.getDefault());
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
-		btnSmoothMetadata.setText("Metadata smoother");
+		btnSmoothMetadata.setText("Metadata Smooth");
+
+		Label label = new Label(shlAudiopaser, SWT.SEPARATOR | SWT.HORIZONTAL);
+		label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 5, 1));
+
+		Label lblFilteLevel = new Label(shlAudiopaser, SWT.NONE);
+		lblFilteLevel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblFilteLevel.setText("Filter level: ");
+
+		final Spinner spinner_1 = new Spinner(shlAudiopaser, SWT.BORDER);
+		spinner_1.setMinimum(1);
+		spinner_1.setSelection(10);
+		new Label(shlAudiopaser, SWT.NONE);
+
+		Button btnMetadataFilter = new Button(shlAudiopaser, SWT.NONE);
+		btnMetadataFilter.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		btnMetadataFilter.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int filterRange = spinner_1.getSelection();
+				audioMetadataMaker.filter(filterRange, Display.getDefault());
+			}
+		});
+		btnMetadataFilter.setText("Metadata Filter");
 
 		Label lblChooseMetadaOutput = new Label(shlAudiopaser, SWT.NONE);
 		lblChooseMetadaOutput.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
@@ -187,33 +217,37 @@ public class FindXMp3MetadataPSOGA {
 
 		text_2 = new Text(shlAudiopaser, SWT.BORDER);
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-
-		Button btnChooseMetadaOutput = new Button(shlAudiopaser, SWT.NONE);
-		btnChooseMetadaOutput.setText("Choose File");
-
-		Label lblFilteLevel = new Label(shlAudiopaser, SWT.NONE);
-		lblFilteLevel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		lblFilteLevel.setText("Filter level: ");
-
-		Spinner spinner_1 = new Spinner(shlAudiopaser, SWT.BORDER);
-		spinner_1.setMinimum(1);
-		spinner_1.setSelection(30);
-		new Label(shlAudiopaser, SWT.NONE);
-
-		Button btnMetadataFilter = new Button(shlAudiopaser, SWT.NONE);
-		btnMetadataFilter.setText("Metadata Filter");
+				
+						Button btnChooseMetadaOutput = new Button(shlAudiopaser, SWT.NONE);
+						btnChooseMetadaOutput.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+						btnChooseMetadaOutput.setText("Choose File and save");
 		new Label(shlAudiopaser, SWT.NONE);
 		new Label(shlAudiopaser, SWT.NONE);
 		new Label(shlAudiopaser, SWT.NONE);
 
 		Button btnFindX = new Button(shlAudiopaser, SWT.NONE);
+		btnFindX.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (audioMetadataMaker.getMetadata() == null) {
+					msg.setText("no founded metada!");
+					msg.open();
+				}
+				FindZeroPRLMainWindow findZeroPRLMainWindow = new FindZeroPRLMainWindow();
+				findZeroPRLMainWindow.setTrainData(audioMetadataMaker.getMetadata());
+				findZeroPRLMainWindow.open();
+			}
+		});
 		btnFindX.setText("Find X");
+		new Label(shlAudiopaser, SWT.NONE);
 		new Label(shlAudiopaser, SWT.NONE);
 		new Label(shlAudiopaser, SWT.NONE);
 		new Label(shlAudiopaser, SWT.NONE);
 
 		Button btnShowXBy = new Button(shlAudiopaser, SWT.NONE);
+		btnShowXBy.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		btnShowXBy.setText("Show X by Graph");
+		new Label(shlAudiopaser, SWT.NONE);
 		new Label(shlAudiopaser, SWT.NONE);
 		new Label(shlAudiopaser, SWT.NONE);
 		new Label(shlAudiopaser, SWT.NONE);
@@ -221,7 +255,7 @@ public class FindXMp3MetadataPSOGA {
 
 		Composite composite = new Composite(shlAudiopaser, SWT.NONE);
 		composite.setLayout(new GridLayout(1, false));
-		composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, true, 5, 1));
 
 		Button btnCancel = new Button(composite, SWT.NONE);
 		btnCancel.addSelectionListener(new SelectionAdapter() {

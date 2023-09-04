@@ -19,8 +19,8 @@ import java.io.FileInputStream;
 
 public class AudioParser {
 
-	public String parseToPlainText(boolean appendflag, FileIOManager fileIOManager, String inputFiles, String outputFile)
-			throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+	public String parseToPlainText(boolean appendflag, FileIOManager fileIOManager, String inputFiles,
+			String outputFile) throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		String result = null;
 		// Name string uses relative addressing, assumes the resource is
 		// located in "audio" child folder of folder holding this class.

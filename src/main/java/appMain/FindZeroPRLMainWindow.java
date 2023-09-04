@@ -5,6 +5,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 
+import java.util.ArrayList;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
@@ -98,7 +100,7 @@ public class FindZeroPRLMainWindow {
 		shlGaTrainer = new Shell();
 		shlGaTrainer.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				System.exit(0);
+				shlGaTrainer.dispose();
 			}
 		});
 		shlGaTrainer.setMinimumSize(new Point(800, 480));
@@ -891,7 +893,7 @@ public class FindZeroPRLMainWindow {
 		btnExit.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				System.exit(0);
+				shlGaTrainer.dispose();
 			}
 		});
 		btnExit.setText("Exit");
@@ -1035,5 +1037,9 @@ public class FindZeroPRLMainWindow {
 			}
 			System.out.println("end update solution");
 		}
+	}
+
+	public void setTrainData(ArrayList<Double> metadata) {
+		trainer.setMetadata(metadata);
 	}
 }

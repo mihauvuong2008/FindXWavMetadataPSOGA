@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
 
-import appMain.FindZeroInout;
+import appMain.FindXWavInout;
 import appMain.GA_PSO_InOutForm;
 import ga_training.aiEvolution.AiEvolution;
 import ga_training.aiEvolution.PlanOfchilds;
@@ -79,6 +79,8 @@ public class GATrainer {
 	private double psoBorder = 20;
 	private GA_PSO_InOutForm ga_PSO_InOutForm;
 	private PSOsupport psoupport;
+
+	private ArrayList<Double> metadata;
 
 	public GATrainer() {
 		super();
@@ -344,7 +346,7 @@ public class GATrainer {
 		double Valuelevel = aiEvolution.getValuer().getValueLevel(); // update news
 		double DNAres = BinnaryGentoPhenotypic
 				.convertFromBinaryToNegativeDec(evaluatedCandidate.getCandidate().getGene());
-		double ResultValue = FindZeroInout.getUpgradedx(UpgradeValue, aiEvolution.getValuer().getUpgradeLen(), DNAres);
+		double ResultValue = FindXWavInout.getUpgradedx(UpgradeValue, aiEvolution.getValuer().getUpgradeLen(), DNAres);
 		Result rs = new Result(UpgradeValue, ResultValue, evaluatedCandidate, Valuelevel);
 
 		return rs;
@@ -722,6 +724,10 @@ public class GATrainer {
 
 	public double getPsoBorder() {
 		return psoBorder;
+	}
+
+	public void setMetadata(ArrayList<Double> metadata) {
+		this.metadata = metadata;
 	}
 
 }
