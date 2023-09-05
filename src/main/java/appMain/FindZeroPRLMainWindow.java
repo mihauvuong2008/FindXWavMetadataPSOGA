@@ -64,6 +64,11 @@ public class FindZeroPRLMainWindow {
 	private Label label_Varat_2;
 	private Label lblAverage;
 
+	public FindZeroPRLMainWindow() {
+		// TODO Auto-generated constructor stub
+		trainer = new GATrainer();
+	}
+
 	/**
 	 * Launch the application.
 	 * 
@@ -109,7 +114,6 @@ public class FindZeroPRLMainWindow {
 		shlGaTrainer.setSize(1070, 660);
 		shlGaTrainer.setText("GA trainer");
 		shlGaTrainer.setLayout(new GridLayout(2, false));
-		trainer = new GATrainer();
 
 		ToolBar toolBar = new ToolBar(shlGaTrainer, SWT.FLAT | SWT.RIGHT);
 		toolBar.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
@@ -1034,6 +1038,9 @@ public class FindZeroPRLMainWindow {
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				if (shlGaTrainer.isDisposed()) {
+					AutoUpgradeSolution = false;
+				}
 			}
 			System.out.println("end update solution");
 		}

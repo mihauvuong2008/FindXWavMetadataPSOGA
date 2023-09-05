@@ -57,8 +57,7 @@ public class Valuer {
 	public final double getValue(GENE g, ArrayList<Double> metadata) {
 		double dNAres = BinnaryGentoPhenotypic.convertFromBinaryToNegativeDec(g.getGene());
 		double x = FindXWavInout.getUpgradedx(upgrade, upgradeLen, dNAres);
-		double y = FindXWavInout.y(x);
-		return FindXWavInout.getTotalError(metadata, getValueLevel(), y);
+		return FindXWavInout.getTotalError(metadata, getValueLevel(), x);
 	}
 
 	public final double getValue(GENE g) {

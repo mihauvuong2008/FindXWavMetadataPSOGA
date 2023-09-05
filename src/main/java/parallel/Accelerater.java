@@ -111,7 +111,7 @@ public class Accelerater {
 
 	}
 
-	public ArrayList<EvaluatedCandidate> ValueSuport() throws InterruptedException {
+	public ArrayList<EvaluatedCandidate> ValueSuport(ArrayList<Double> metadata) throws InterruptedException {
 		sinfo = setNumOfStream(populations.size());
 		ArrayList<EvaluatedCandidate> evaluatedCandidate_result = new ArrayList<>();
 
@@ -137,7 +137,7 @@ public class Accelerater {
 
 		ValueSupportStreamer[] execThread = new ValueSupportStreamer[ListSub.size()];
 		for (int j = 0; j < ListSub.size(); j++) {
-			execThread[j] = new ValueSupportStreamer(aiEvolution, ListSub.get(j), evaluatedCandidate_result);
+			execThread[j] = new ValueSupportStreamer(aiEvolution, ListSub.get(j), metadata, evaluatedCandidate_result);
 		}
 
 		Random shake = new Random();

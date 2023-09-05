@@ -80,7 +80,7 @@ public class GATrainer {
 	private GA_PSO_InOutForm ga_PSO_InOutForm;
 	private PSOsupport psoupport;
 
-	private ArrayList<Double> metadata;
+	private static ArrayList<Double> metadata;
 
 	public GATrainer() {
 		super();
@@ -123,7 +123,7 @@ public class GATrainer {
 			}
 			log.info("");
 			log.info("Start... - loop: " + i);
-
+			ArrayList<Double> _metadata = metadata;
 			tmpTime = System.currentTimeMillis();
 			upgradecount += 1;
 			flagUpdateResult = false;
@@ -149,7 +149,7 @@ public class GATrainer {
 //				candidateSet = aiEvolution.Value(populations, valueLevel);
 				aiEvolution.getValuer().setValueLevel(valueLevel);
 				accelerater.setupGate(populations, null, cPUprioritize);
-				candidateSet = accelerater.ValueSuport();
+				candidateSet = accelerater.ValueSuport(_metadata);
 
 				log.info("candidateSet.size(): [" + candidateSet.size() + "] , PlannumOfChild: " + plcls.getPlcls()
 						+ ", makeBestChildgRatio: " + makeBestChildgRatio + ", MutantRatio: " + mutantRatio
@@ -183,7 +183,7 @@ public class GATrainer {
 //			accelerater.setupGate(populations, candidateSet, cPUprioritize);
 //			populations = accelerater.SelectionSuport(naturalFitnessScores, rouletteRandom, size);
 			tripleSelection.setupGate(populations, candidateSet, cPUprioritize);
-			populations = tripleSelection.TrippelSelect2(naturalFitnessScores, selectionRandom, size);
+			populations = tripleSelection.TrippelSelect(naturalFitnessScores, selectionRandom, size, _metadata);
 //			populations = RouletteWheelSelection.select(candidateSet, naturalFitnessScores, rouletteRandom, size);
 
 			//

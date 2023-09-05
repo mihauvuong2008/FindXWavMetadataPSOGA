@@ -108,7 +108,7 @@ public class AudioMetadataMaker {
 		}
 	}
 
-	public void filter(int filterRange, Display display) {
+	public void filter(int filterRange, Display display) throws IOException {
 		ArrayList<Double> smoothData = new ArrayList<>();
 		if (smootherData == null) {
 			String smootherDataFile = fileIOManager.chooseSingleFile(display);
@@ -116,16 +116,21 @@ public class AudioMetadataMaker {
 				return;
 			smoothData = fileIOManager.readLineSmoothData(smootherDataFile);
 			filterData = filter.filter(smoothData, filterRange, display);
-			return;
-		}
 
-		for (ArrayList<Double> data : smootherData) {
-			for (Double ele : data) {
-				smoothData.add(ele);
+		} else {
+			for (ArrayList<Double> data : smootherData) {
+				for (Double ele : data) {
+					smoothData.add(ele);
+				}
 			}
 		}
 
 		filterData = filter.filter(smoothData, filterRange, display);
+		String outputFilter = fileIOManager.chooseFolder(display);
+		String fullPath = fileIOManager.createFile(outputFilter, "trueMetadata");
+		for (Double ele : filterData) {
+			fileIOManager.writeline(String.valueOf(ele), fullPath, true);
+		}
 	}
 
 	public ArrayList<Double> getMetadata() {

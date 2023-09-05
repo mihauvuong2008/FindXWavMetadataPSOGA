@@ -53,34 +53,8 @@ public class TrippelSelection {
 		}
 	}
 
-	public ArrayList<GENE> TrippelSelect(boolean naturalFitnessScores, Random rouletteRandom, int size)
-			throws InterruptedException {
-		ArrayList<GENE> populationsResult = new ArrayList<>();
-		int breakPoint = candidateSet.size() / TRIPLE;
-		int resize = size / TRIPLE;
-		for (int i = 0; i < TRIPLE; i++) {
-			if (i == TRIPLE - 1) {
-				List<EvaluatedCandidate> sub = candidateSet.subList(i * breakPoint, candidateSet.size() - 1);
-				_fakeCandidateSet[i].addAll(sub);
-			} else {
-				List<EvaluatedCandidate> sub = candidateSet.subList(i * breakPoint, (i + 1) * breakPoint);
-				_fakeCandidateSet[i].addAll(sub);
-			}
-		}
-		for (int i = 0; i < TRIPLE; i++) {
-			accelerater.setupGate(null, _fakeCandidateSet[i], cPUprioritize);
-			_fakePopulations[i] = accelerater.SelectionSuport(naturalFitnessScores, spaceRandom[i], resize);
-		}
-
-		for (int i = 0; i < TRIPLE; i++) {
-			populationsResult.addAll(_fakePopulations[i]);
-		}
-
-		return populationsResult;
-	}
-
-	public ArrayList<GENE> TrippelSelect2(boolean naturalFitnessScores, Random rouletteRandom, int size)
-			throws InterruptedException {
+	public ArrayList<GENE> TrippelSelect(boolean naturalFitnessScores, Random rouletteRandom, int size,
+			ArrayList<Double> metadata) throws InterruptedException {
 		ArrayList<GENE> populationsResult = new ArrayList<>();
 		int resize = size / TRIPLE;
 
@@ -88,7 +62,7 @@ public class TrippelSelection {
 		ArrayList<GENE> firstStepPopnsTripSel = accelerater.SelectionSuport(naturalFitnessScores, rouletteRandom, size);
 
 		accelerater.setupGate(firstStepPopnsTripSel, null, cPUprioritize);
-		ArrayList<EvaluatedCandidate> firstCandidateSet = accelerater.ValueSuport();
+		ArrayList<EvaluatedCandidate> firstCandidateSet = accelerater.ValueSuport(metadata);
 
 		for (int i = 0; i < TRIPLE; i++) {
 			accelerater.setupGate(null, firstCandidateSet, cPUprioritize);

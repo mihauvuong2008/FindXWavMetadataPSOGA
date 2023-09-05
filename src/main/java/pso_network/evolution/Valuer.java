@@ -34,6 +34,17 @@ public class Valuer {
 		return y;
 	}
 
+	public static double value(ArrayList<Double> _metadata, double x) {
+		int len = _metadata.size();
+		double totalErr = 0;
+		for (int i = 0; i < len; i++) {
+			double err = _metadata.get(i) - PSO_InOut.y(x, i);
+			totalErr += err * err;
+		}
+		double rs = 1 / (0.01 + Math.pow(totalErr, 0.25));
+		return rs;
+	}
+
 	public double value(Position position) {
 		double x = _x(position.getX(), position.getY(), position.getZ());
 //		System.out.println(y);

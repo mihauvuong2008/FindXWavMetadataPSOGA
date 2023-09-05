@@ -306,14 +306,14 @@ public class AiEvolution {
 		return rs;
 	}
 
-	public ArrayList<EvaluatedCandidate> Value(ArrayList<GENE> part) {
+	public ArrayList<EvaluatedCandidate> Value(ArrayList<GENE> part, ArrayList<Double> metadata) {
 		ArrayList<EvaluatedCandidate> result = new ArrayList<>();
 		int size = part.size();
 		for (int i = 0; i < size; i++) {
 			EvaluatedCandidate evaluatedCandidate = new EvaluatedCandidate();
 			GENE element = part.get(i);
 			evaluatedCandidate.setCandidate(element);
-			evaluatedCandidate.setIndex(valuer.getValue(element));
+			evaluatedCandidate.setIndex(valuer.getValue(element, metadata));
 			result.add(evaluatedCandidate);
 		}
 		return result;

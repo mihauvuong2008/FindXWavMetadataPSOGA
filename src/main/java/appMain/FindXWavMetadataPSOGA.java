@@ -197,7 +197,7 @@ public class FindXWavMetadataPSOGA {
 
 		final Spinner spinner_1 = new Spinner(shlAudiopaser, SWT.BORDER);
 		spinner_1.setMinimum(1);
-		spinner_1.setSelection(10);
+		spinner_1.setSelection(30);
 		new Label(shlAudiopaser, SWT.NONE);
 
 		Button btnMetadataFilter = new Button(shlAudiopaser, SWT.NONE);
@@ -206,7 +206,12 @@ public class FindXWavMetadataPSOGA {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int filterRange = spinner_1.getSelection();
-				audioMetadataMaker.filter(filterRange, Display.getDefault());
+				try {
+					audioMetadataMaker.filter(filterRange, Display.getDefault());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnMetadataFilter.setText("Metadata Filter");
@@ -217,10 +222,10 @@ public class FindXWavMetadataPSOGA {
 
 		text_2 = new Text(shlAudiopaser, SWT.BORDER);
 		text_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-				
-						Button btnChooseMetadaOutput = new Button(shlAudiopaser, SWT.NONE);
-						btnChooseMetadaOutput.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-						btnChooseMetadaOutput.setText("Choose File and save");
+
+		Button btnChooseMetadaOutput = new Button(shlAudiopaser, SWT.NONE);
+		btnChooseMetadaOutput.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+		btnChooseMetadaOutput.setText("Choose File and save");
 		new Label(shlAudiopaser, SWT.NONE);
 		new Label(shlAudiopaser, SWT.NONE);
 		new Label(shlAudiopaser, SWT.NONE);
