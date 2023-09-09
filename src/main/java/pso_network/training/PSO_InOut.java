@@ -47,7 +47,7 @@ public class PSO_InOut {
 		return FindXWavInout.y(upgrade + x);
 	}
 
-	static public double y(double x, int i) {
-		return FindXWavInout.y(upgrade + x, i);
-	}
+//	static public double y(double x, int i) {
+//		return FindXWavInout.y(upgrade + x, i);
+//	}
 }

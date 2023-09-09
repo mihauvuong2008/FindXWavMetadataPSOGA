@@ -1,30 +1,18 @@
 package ga_training;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Text;
 
 import appMain.FindXWavInout;
 import appMain.GA_PSO_InOutForm;
 import ga_training.aiEvolution.AiEvolution;
 import ga_training.aiEvolution.PlanOfchilds;
-import ga_training.selection.CoinFlipGameSelection;
-import ga_training.selection.DiceGameSelection;
-import ga_training.selection.RemakeRouletteWheelSelection;
-import ga_training.selection.RouletteWheelSelection;
-import ga_training.selection.SortSelection;
 import ga_training.selection.TrippelSelection;
 import genetoPhenotypic.BinnaryGentoPhenotypic;
 import parallel.Accelerater;
-import pso_network.Space;
-import pso_network.training.PSO_InOut;
 
-@SuppressWarnings("unused")
 public class GATrainer {
 
 	static Logger log = Logger.getLogger("GATrainer");
@@ -39,14 +27,14 @@ public class GATrainer {
 	private Random selectionRandom;
 	private AiEvolution aiEvolution;
 
-	private int loop = 100;
-	private int lenOfGen = 40;
+	private int loop = 160;
+	private int lenOfGen = 140;
 	private boolean naturalFitnessScores = true;
 	private boolean cPUprioritize = false;
 	private String selectorValue = SelectionChooser.COINFLIPGAMESELECTION;
 	Selector selectorChooser;
 	private int firstClasssize = 50000;
-	private int minimumPopsize = 30000;
+	private int minimumPopsize = 50000;
 	private int maximunPopsize = 60000;
 	private double valueLevel = 1;
 	private double makeBestChildgRatio = 0.06;
@@ -80,6 +68,8 @@ public class GATrainer {
 	private GA_PSO_InOutForm ga_PSO_InOutForm;
 	private PSOsupport psoupport;
 
+	private int numOfParam = 10;
+
 	private static ArrayList<Double> metadata;
 
 	public GATrainer() {
@@ -90,7 +80,7 @@ public class GATrainer {
 	private void init() {
 		trainInfor = new TrainInfor();
 		selectionRandom = new Random();
-		aiEvolution = new AiEvolution(lenOfGen);
+		aiEvolution = new AiEvolution(numOfParam, lenOfGen);
 		selectorChooser = new Selector(selectorValue);
 		isCompleteTrain = false;
 		log.info("============init================");
@@ -113,7 +103,6 @@ public class GATrainer {
 		long tmpTime = 0;
 		int upgradecount = 0;
 		boolean isFirstupgradeSolution = true;
-		boolean isfirstClassinit = false;
 
 		for (int i = 0; i < loop; i++) {
 			pauseTrain();
@@ -128,54 +117,52 @@ public class GATrainer {
 			upgradecount += 1;
 			flagUpdateResult = false;
 
-			if (populations.size() < maximunPopsize || !isfirstClassinit) {
-				isfirstClassinit = true;
-				//
-				//
-				//
-				// ===== Incorporating ======
+			//
+			//
+			//
+			// ===== Incorporating ======
 
-				log.info("Incorporating...");
-				plcls.setupPlandescr(gama, nChildPlan, numOfChild);
-				aiEvolution.Incorporate /* ket hop */ (populations, plcls, makeBestChildgRatio, mutantRatio,
-						somaMutantRatio, hybridRatio, defendRatio, makeEverythingRatio);
-				//
-				//
-				//
-				// ===== Value ======
+			log.info("Incorporating...");
+			plcls.setupPlandescr(gama, nChildPlan, numOfChild);
+			aiEvolution.Incorporate /* ket hop */ (populations, plcls, makeBestChildgRatio, mutantRatio,
+					somaMutantRatio, hybridRatio, defendRatio, makeEverythingRatio);
+			//
+			//
+			//
+			// ===== Value ======
 
-				log.info("");
-				log.info("aiEvolution Value...");
+			log.info("");
+			log.info("aiEvolution Value...");
 //				candidateSet = aiEvolution.Value(populations, valueLevel);
-				aiEvolution.getValuer().setValueLevel(valueLevel);
-				accelerater.setupGate(populations, null, cPUprioritize);
-				candidateSet = accelerater.ValueSuport(_metadata);
+			aiEvolution.getValuer().setValueLevel(valueLevel);
+			accelerater.setupGate(populations, null, cPUprioritize);
+			candidateSet = accelerater.ValueSuport(_metadata);
 
-				log.info("candidateSet.size(): [" + candidateSet.size() + "] , PlannumOfChild: " + plcls.getPlcls()
-						+ ", makeBestChildgRatio: " + makeBestChildgRatio + ", MutantRatio: " + mutantRatio
-						+ ", SomaMutantRatio: " + somaMutantRatio + ", HybridRatio: " + hybridRatio + ", DefendRatio: "
-						+ defendRatio + ", makeEverythingRatio " + makeEverythingRatio);
-				//
-				//
-				//
-				// ====== current result ====== AlgoritResult====
-				log.info("");
-				log.info("get Algor Result...");
-				evaluatedCandidate = getAlgoritResult(candidateSet); // get fake solution
-				keepBestResultCache = aiEvolution.getReinforcementLearning().getTopResult(candidateSet);
-				//
-				getResultAndSolution(evaluatedCandidate);
-				//
-				//
-				// ====== updateTrainParamater =====
-				updateTrainParamater();
-			}
+			log.info("candidateSet.size(): [" + candidateSet.size() + "] , PlannumOfChild: " + plcls.getPlcls()
+					+ ", makeBestChildgRatio: " + makeBestChildgRatio + ", MutantRatio: " + mutantRatio
+					+ ", SomaMutantRatio: " + somaMutantRatio + ", HybridRatio: " + hybridRatio + ", DefendRatio: "
+					+ defendRatio + ", makeEverythingRatio " + makeEverythingRatio);
+			//
+			//
+			//
+			// ====== current result ====== AlgoritResult====
+			log.info("");
+			log.info("get Algor Result...");
+			evaluatedCandidate = getAlgoritResult(candidateSet); // get fake solution
+			keepBestResultCache = aiEvolution.getReinforcementLearning().getTopResult(candidateSet);
+			//
+			getResultAndSolution(evaluatedCandidate);
+			//
+			//
+			// ====== updateTrainParamater =====
+			updateTrainParamater();
 			//
 			//
 			//
 			// ===== selection =====
 			int size = (int) (selectionRatio * populations.size());
 			size = size > minimumPopsize ? size : populations.size();
+			size = size < maximunPopsize ? size : maximunPopsize;
 
 			log.info("");
 			log.info("selection...");
@@ -254,31 +241,32 @@ public class GATrainer {
 
 		private void autoUpgradeByPSO() throws InterruptedException {
 
-			double border = currResult.getResult();
-			GA_PSO_InOutForm ga_PSO_InOutForm = new GA_PSO_InOutForm();
-			ga_PSO_InOutForm.setSizeOfPopulation(sizeOfPSOPopulation);
-
-			Space space = new Space((int) (psoBorder / 10), border + psoBorder, border + psoBorder, border + psoBorder,
-					border - psoBorder, border - psoBorder, border - psoBorder);
-			ga_PSO_InOutForm.setSpace(space);
-			ga_PSO_InOutForm.setLoopTotal(PSOLoopTotal);
-			PSO_InOut pso_InOut = new PSO_InOut(ga_PSO_InOutForm);
-			pso_InOut.setUpgrade(upgrade);
-			pso_InOut.action();
-
-			double _result = pso_InOut.getResult();
-
-			upgrade = _result;
-			double partnerFiness = aiEvolution.getValuer().getpartnerValue(_result);
-
-			if (partnerFiness > solution.getError().getFitness()) {
-				synchronized (aiEvolution) {
-					aiEvolution.getValuer().setUpgrade(_result);
-				}
-			}
-
-			log.info("PSO upgrade: " + "(" + pso_InOut.getResult() + ")");
+//			double border = currResult.getResult();
+//			GA_PSO_InOutForm ga_PSO_InOutForm = new GA_PSO_InOutForm();
+//			ga_PSO_InOutForm.setSizeOfPopulation(sizeOfPSOPopulation);
+//
+//			Space space = new Space((int) (psoBorder / 10), border + psoBorder, border + psoBorder, border + psoBorder,
+//					border - psoBorder, border - psoBorder, border - psoBorder);
+//			ga_PSO_InOutForm.setSpace(space);
+//			ga_PSO_InOutForm.setLoopTotal(PSOLoopTotal);
+//			PSO_InOut pso_InOut = new PSO_InOut(ga_PSO_InOutForm);
+//			pso_InOut.setUpgrade(upgrade);
+//			pso_InOut.action();
+//
+//			double _result = pso_InOut.getResult();
+//
+//			upgrade = _result;
+//			double partnerFiness = aiEvolution.getValuer().getpartnerValue(_result);
+//
+//			if (partnerFiness > solution.getError().getFitness()) {
+//				synchronized (aiEvolution) {
+////					aiEvolution.getValuer().setUpgrade(_result);
+//				}
+//			}
+//
+//			log.info("PSO upgrade: " + "(" + pso_InOut.getResult() + ")");
 		}
+
 	}
 
 	private void updateTrainInfo(int thisLoopTotaltime, int size, int loop) {
@@ -342,14 +330,17 @@ public class GATrainer {
 
 	private Result getCurrResult(EvaluatedCandidate evaluatedCandidate) {
 
-		double UpgradeValue = aiEvolution.getValuer().getUpgrade(); // update news
+		double[] UpgradeValue = aiEvolution.getValuer().getUpgrade(); // update news
 		double Valuelevel = aiEvolution.getValuer().getValueLevel(); // update news
-		double DNAres = BinnaryGentoPhenotypic
-				.convertFromBinaryToNegativeDec(evaluatedCandidate.getCandidate().getGene());
-		double ResultValue = FindXWavInout.getUpgradedx(UpgradeValue, aiEvolution.getValuer().getUpgradeLen(), DNAres);
-		Result rs = new Result(UpgradeValue, ResultValue, evaluatedCandidate, Valuelevel);
+		double DNAres[] = BinnaryGentoPhenotypic.convertFromBinaryToArrDec(numOfParam,
+				evaluatedCandidate.getCandidate().getGene());
+		double[] ResultValue = new double[numOfParam];
+		for (int i = 0; i < ResultValue.length; i++) {
+			ResultValue[i] = FindXWavInout.getUpgradedx(UpgradeValue[i], aiEvolution.getValuer().getUpgradeLen(),
+					DNAres[i]);
+		}
 
-		return rs;
+		return new Result(UpgradeValue, ResultValue, evaluatedCandidate, Valuelevel);
 	}
 
 	private void getBestResult() {
@@ -397,17 +388,13 @@ public class GATrainer {
 	private void showCurrResult() {
 		log.info("");
 		log.info("current result: ");
-		log.info("x (upgred): " + currResult.getResult() + "(UpgradeValue: " + currResult.getUpgradeValue() + " + dna  "
-				+ (currResult.getResult() - currResult.getUpgradeValue()) + " )" + " - getFitness: "
-				+ currResult.getError().getFitness());
+		log.info(" - getFitness: " + currResult.getError().getFitness());
 	}
 
 	private void showBestResult() {
 		log.info("");
 		log.info("best result: ");
-		log.info("x (upgred): " + bestResult.getResult() + "(UpgradeValue: " + bestResult.getUpgradeValue() + " + dna  "
-				+ (bestResult.getResult() - bestResult.getUpgradeValue()) + " )" + " - getFitness: "
-				+ bestResult.getError().getFitness());
+		log.info(" - getFitness: " + bestResult.getError().getFitness());
 
 	}
 
@@ -474,9 +461,17 @@ public class GATrainer {
 		return bestResult;
 	}
 
-	public double upgradeSolution() {
+	private double[] comparor(double[] currResultResult, double[] bestResultResult) {
+		double[] rs = new double[bestResultResult.length];
+		for (int i = 0; i < bestResultResult.length; i++) {
+			rs[i] = compare(currResult.getResult()[i], bestResult.getResult()[i]);
+		}
+		return rs;
+	}
+
+	public double[] upgradeSolution() {
 		// here is another loop for reinforcement learning///
-		double _result = compare(currResult.getResult(), bestResult.getResult());
+		double[] _result = comparor(currResult.getResult(), bestResult.getResult());
 //		if (bestResult.getError().getFitness() < 1) {
 //			_result = 0;
 //		}

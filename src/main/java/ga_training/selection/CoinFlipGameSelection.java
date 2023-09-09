@@ -20,7 +20,6 @@ public class CoinFlipGameSelection {
 		DataAdjuster dataAdjuster = new DataAdjuster();
 		MaxMinRemaker maxMinRemaker = dataAdjuster.getMaxMinRemaker(candidateSet);
 		double[] remakeCandidateSet = maxMinRemaker.getArrayData();
-
 		SmooothGate smthPosition = dataAdjuster.getSmooothPosition(remakeCandidateSet);
 		remakeCandidateSet = averageSmooth(remakeCandidateSet, smthPosition);
 		smthPosition = dataAdjuster.getSmooothPosition(remakeCandidateSet);
@@ -28,6 +27,8 @@ public class CoinFlipGameSelection {
 			remakeCandidateSet = powSmooth(remakeCandidateSet, smthPosition);
 		if (naturalFitnessScores)
 			smthPosition = dataAdjuster.getSmooothPosition(remakeCandidateSet);
+//		System.out.println(
+//				smthPosition.getAverage() + " " + smthPosition.getFakeAverage() + " " + smthPosition.getOmega());
 		ArrayList<GENE> selection = new ArrayList<>();
 		GENE ele;
 		for (int i = 0; i < selectionSize; i++) {
@@ -49,6 +50,8 @@ public class CoinFlipGameSelection {
 		while (candidate == null) {
 			index = indexRandom.nextInt(len);
 			Coinflip = coinflipRandom.nextDouble() * delta * (coinflipRandom.nextDouble() > 0.5 ? 1d : -1d);
+//			System.out.println(smthgt.getAverage() + " " + Coinflip + " " + remakeCandidateSet[index] + " " + " "
+//					+ smthgt.getAverage() + Coinflip);
 			if (remakeCandidateSet[index] >= smthgt.getAverage() + Coinflip) {
 				candidate = candidateSet.get(index).getCandidate();
 			}
@@ -76,7 +79,10 @@ public class CoinFlipGameSelection {
 		int len = remakeCandidateSet.length;
 		double[] rs = new double[len];
 		for (int i = 0; i < len; i++) {
-			rs[i] = Math.pow(remakeCandidateSet[i], smthgt.getOmega());
+			rs[i] = Math.pow(Math.abs(remakeCandidateSet[i]), smthgt.getOmega());
+			if (Double.isInfinite(rs[i])) {
+				rs[i] = Double.MAX_VALUE;
+			}
 		}
 		return rs;
 	}

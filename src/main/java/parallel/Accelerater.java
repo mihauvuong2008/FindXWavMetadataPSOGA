@@ -17,7 +17,7 @@ public class Accelerater {
 	private final int resourceStep = 100;
 	private AiEvolution aiEvolution;
 	private boolean cPUprioritize = true;
-	private final int FORGIVE_TIME = 1;
+	private final int FORGIVE_TIME = 2;
 
 	private StreamInfo sinfo;
 
@@ -92,19 +92,17 @@ public class Accelerater {
 					naturalFitnessScores, rouletteRandom, suportSize);
 		}
 
-		Random shake = new Random();
 		for (SelectionSupportStreamer selectionSuportStreamer : execThread) {
-			if (selectionSuportStreamer != null)
-				selectionSuportStreamer.start();
-			Thread.sleep(shake.nextInt(FORGIVE_TIME));// here fix loss digital, increse performance and find best
-														// solotion
+			selectionSuportStreamer.start();
+			Thread.sleep(FORGIVE_TIME);// here fix loss digital, increse performance and find best
+										// solotion
 		}
 
 		for (SelectionSupportStreamer selectionSuportStreamer : execThread) {
-			if (selectionSuportStreamer != null)
-				selectionSuportStreamer.join();
-			Thread.sleep(shake.nextInt(FORGIVE_TIME));// here fix loss digital, increse performance and find best
-														// solotion
+			selectionSuportStreamer.join();
+			;
+			Thread.sleep(FORGIVE_TIME);// here fix loss digital, increse performance and find best
+										// solotion
 		}
 
 		return populations_result;

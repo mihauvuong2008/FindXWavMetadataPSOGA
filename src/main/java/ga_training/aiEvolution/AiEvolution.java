@@ -20,7 +20,7 @@ public class AiEvolution {
 	private final Random makeEvythgEvolutionRandom;
 	private final Random makeBestChildRandom;
 
-	public AiEvolution(int lenOfGen) {
+	public AiEvolution(int numOfParam, int lenOfGen) {
 		this.lenOfGen = lenOfGen;
 		reinforcementLearning = new ReinforcementLearning();
 		firstClassEvolutionRandom = new Random();
@@ -31,11 +31,7 @@ public class AiEvolution {
 		makeChildEvolutionRandom = new Random();
 		makeEvythgEvolutionRandom = new Random();
 		makeBestChildRandom = new Random();
-		init();
-	}
-
-	private void init() {
-		valuer = new Valuer();
+		valuer = new Valuer(numOfParam);
 	}
 
 	public int getLenOfGen() {
@@ -314,6 +310,7 @@ public class AiEvolution {
 			GENE element = part.get(i);
 			evaluatedCandidate.setCandidate(element);
 			evaluatedCandidate.setIndex(valuer.getValue(element, metadata));
+//			evaluatedCandidate.setIndex(valuer.getValue(element));
 			result.add(evaluatedCandidate);
 		}
 		return result;

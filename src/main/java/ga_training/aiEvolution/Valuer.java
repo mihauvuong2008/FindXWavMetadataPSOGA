@@ -8,10 +8,16 @@ import genetoPhenotypic.BinnaryGentoPhenotypic;
 
 public class Valuer {
 
+	int numOfParam = 10;
 	private double valueLevel = 0; // luong gia cang cao cang gan loi giai
-	private double upgrade = 0; // reinforcement learning
+	private double upgrade[]; // reinforcement learning
 	private long upgradeLen = 1;
-	private int maxUpgradeLen = 1000;
+
+	public Valuer(int numOfParam) {
+		super();
+		this.numOfParam = numOfParam;
+		this.upgrade = new double[numOfParam];
+	}
 
 	public double getValueLevel() {
 		return valueLevel;
@@ -21,18 +27,15 @@ public class Valuer {
 		this.valueLevel = valueLevel;
 	}
 
-	public double getUpgrade() {
+	public double[] getUpgrade() {
 		return upgrade;
 	}
 
-	public void setUpgrade(double upgrade) {
+	public void setUpgrade(double upgrade[]) {
 		this.upgrade = upgrade;
-		int len = getNumLen(upgrade);
+		int len = getNumLen(upgrade[0]);
 		upgradeLen = (long) Math.pow(10, len);
-		if (upgradeLen >= maxUpgradeLen) {
-			upgradeLen = maxUpgradeLen;
-		}
-//		System.out.println("len: " + len + " upgradeLe: " + upgradeLen);
+		System.out.println("upgradeLen: " + upgradeLen);
 	}
 
 	private int getNumLen(double number) {
@@ -55,13 +58,17 @@ public class Valuer {
 	}
 
 	public final double getValue(GENE g, ArrayList<Double> metadata) {
-		double dNAres = BinnaryGentoPhenotypic.convertFromBinaryToNegativeDec(g.getGene());
-		double x = FindXWavInout.getUpgradedx(upgrade, upgradeLen, dNAres);
+		double dNAres[] = BinnaryGentoPhenotypic.convertFromBinaryToArrDec(numOfParam, g.getGene());
+		double[] x = new double[numOfParam];
+		for (int i = 0; i < dNAres.length; i++) {
+			x[i] = FindXWavInout.getUpgradedx(upgrade[i], upgradeLen, dNAres[i]);
+//			System.out.println("x[" + i + "]: " + x[i] + ", dNAres[" + i + "]: " + dNAres[i]);
+		}
 		return FindXWavInout.getTotalError(metadata, getValueLevel(), x);
 	}
 
-	public final double getValue(GENE g) {
-		double dNAres = BinnaryGentoPhenotypic.convertFromBinaryToNegativeDec(g.getGene());
+	public final double getValue(double upgrade, GENE g) {
+		double dNAres = BinnaryGentoPhenotypic.convertFromBinaryToFloatingPointNegativeDec(g.getGene());
 		double x = FindXWavInout.getUpgradedx(upgrade, upgradeLen, dNAres);
 		double y = FindXWavInout.y(x);
 		return FindXWavInout.getUpgradedy(getValueLevel(), y);

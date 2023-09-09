@@ -55,6 +55,7 @@ public class SelectionSupportStreamer extends Thread {
 			synchronized (populations_result) {
 				populations_result.addAll(_populations1);
 			}
+
 //			System.out.println("COINFLIPGAMESELECTION");
 			break;
 		case SelectionChooser.DICEGAMESELECTION:

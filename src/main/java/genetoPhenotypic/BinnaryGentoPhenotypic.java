@@ -1,6 +1,7 @@
 package genetoPhenotypic;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BinnaryGentoPhenotypic {
 	public int miniDecimal_to_binary(double i) {
@@ -73,20 +74,41 @@ public class BinnaryGentoPhenotypic {
 		return negative * ((double) j / 1000000000);
 	}
 
-	public final static double convertFromBinaryToNegativeDec(double[] output) {
-		long /** more digital resource */
-		j = 0;
-		int len = output.length - 1;
+	public static long convertFromBinaryToIntDec(double[] output) {
+		long j = 0;
+		int len = output.length;
 		int _len = len - 1;
 		for (int i = 0; i < len; i++) {
 			if (output[i] >= 0.5) {
 				j += Math.pow(2, _len - i);
 			}
 		}
-		int negative = (output[len] > 0.5) ? 1 : -1;
-		BigDecimal bdj = new BigDecimal(j);
-		BigDecimal _rs = bdj.divide(new BigDecimal(1000000000));
-		double rs = negative * _rs.doubleValue();
+		return j;
+	}
+
+	public final static double convertFromBinaryToFloatingPointNegativeDec(double[] output) {
+		int len = output.length - 2;
+		int floatingPoint = (int) (output[len] * len);
+		double[] last = Arrays.copyOfRange(output, 0, floatingPoint);
+		double[] first = Arrays.copyOfRange(output, floatingPoint, len);
+
+		long _last = convertFromBinaryToIntDec(last);
+		long _first = convertFromBinaryToIntDec(first);
+		String append = "" + _first + "." + _last;
+		double rawrs = Double.valueOf(append);
+		double rs = (output[len + 1] > 0.5 ? 1 : -1) * rawrs;
+		return rs;
+	}
+
+	public final static double[] convertFromBinaryToArrDec(int numOfParam, double[] output) {
+		int len = output.length;
+		int _len = len / numOfParam;
+		double[] rs = new double[numOfParam];
+		for (int i = 0; i < numOfParam; i++) {
+			double[] arr = Arrays.copyOfRange(output, i * _len, (i + 1) * _len);
+			rs[i] = convertFromBinaryToFloatingPointNegativeDec(arr);
+//			System.out.println("arr: " + arr.length + ", len: " + len + ", rs[i]: " + rs[i]);
+		}
 		return rs;
 	}
 
