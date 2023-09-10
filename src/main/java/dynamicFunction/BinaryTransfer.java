@@ -43,7 +43,9 @@ public final class BinaryTransfer {
 			return rs;
 		}
 		String first = part[0];
-		String last = part[1];
+		int lastLen = part[1].length();
+		lastLen = (lastLen > 9 ? 9 : lastLen);
+		String last = part[1].substring(0, lastLen);
 		double[] _first = decToBinary(Integer.valueOf(first), size);
 		int _lastlength = size - _first.length - 2;
 		int max = (int) Math.pow(2, _lastlength) - 1;
