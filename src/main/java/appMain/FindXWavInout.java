@@ -24,9 +24,9 @@ public final class FindXWavInout {
 
 //		return 2 * Math.pow(x, 5) + 3 * Math.pow(x, 4) - 8 * Math.pow(x, 3) + 2 * Math.pow(x, 2) + 1;
 		double function = a[1] * Math.sin(a[2] * Math.cos(x) * x + a[3]) + a[4] * Math.sin(a[5] * x)
-				+ a[6] * Math.sin(a[7] * Math.sin(a[8] * x) + a[9])
-				+ a[10] * Math.cos(a[11] * Math.sin(a[12] * x) + a[13] * Math.sin(a[14] * x)) + Math.sin(a[15] * x)
-				+ a[16] * Math.sin(a[17] * Math.cos(a[18] * x) * x + a[19]) + a[0];
+				+ a[6] * Math.sin(a[7] + a[9]) * Math.sin(a[8] * x)
+				+ a[10] * Math.cos(a[11] * Math.sin(a[12] * x) * x + a[13] * Math.sin(a[14] * x))
+				+ Math.sin(a[15] * x) * a[16] * Math.sin(a[17] * Math.cos(a[18] * x) * x + a[19]) + a[0];
 //		double function = a[0] + a[1] + a[2] + a[3] + a[4] + a[5] + a[6] + a[7] + a[8] + a[9] + a[10] + a[11] + a[12]
 //				+ a[13] + a[14] + a[15] + a[16] + a[17] + a[18] + a[19];
 		return function;

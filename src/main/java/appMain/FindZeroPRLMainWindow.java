@@ -1035,6 +1035,9 @@ public class FindZeroPRLMainWindow {
 					Display.getDefault().syncExec(new Runnable() {
 						public void run() {
 							try {
+								if (drawData.isVisible()) {
+									drawData.redraw();
+								}
 								TrainInfor trainInfor = trainer.getTrainInfor();
 								textSolution.setText("" + (trainInfor.getSolution() == null ? -1
 										: trainInfor.getSolution().getResult()));

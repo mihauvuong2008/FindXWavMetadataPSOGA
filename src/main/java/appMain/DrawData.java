@@ -55,7 +55,7 @@ public class DrawData extends Shell {
 				clientArea = getShell().getClientArea();
 
 				ArrayList<Double> data = trainer.getMetadata();
-				int step = clientArea.width / (2 * data.size());
+				int step = clientArea.width / (2 * data.size()) + 1;
 				int ZeroPointY = 150;
 				if (trainer.getSolution() == null)
 					return;

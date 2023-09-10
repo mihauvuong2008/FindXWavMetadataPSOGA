@@ -84,7 +84,6 @@ public class AudioMetadataMaker {
 			}
 		};
 		thread.start();
-
 	}
 
 	public String getInputRawfile(Display display) {
