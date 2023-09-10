@@ -228,9 +228,25 @@ public class FindXWavMetadataPSOGA {
 		btnChooseMetadaOutput.setText("Choose File and save");
 		new Label(shlAudiopaser, SWT.NONE);
 		new Label(shlAudiopaser, SWT.NONE);
-		new Label(shlAudiopaser, SWT.NONE);
+
+		Button btnLoadMetadata = new Button(shlAudiopaser, SWT.NONE);
+		btnLoadMetadata.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				int filterRange = spinner_1.getSelection();
+				try {
+					audioMetadataMaker.loadmetadata(filterRange, Display.getDefault());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnLoadMetadata.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		btnLoadMetadata.setText("Load Metadata");
 
 		Button btnFindX = new Button(shlAudiopaser, SWT.NONE);
+		btnFindX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 		btnFindX.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -239,6 +255,7 @@ public class FindXWavMetadataPSOGA {
 					msg.open();
 				}
 				FindZeroPRLMainWindow findZeroPRLMainWindow = new FindZeroPRLMainWindow();
+				System.out.println("getMetadata: " + audioMetadataMaker.getMetadata());
 				findZeroPRLMainWindow.setTrainData(audioMetadataMaker.getMetadata());
 				findZeroPRLMainWindow.open();
 			}

@@ -8,7 +8,7 @@ import genetoPhenotypic.BinnaryGentoPhenotypic;
 
 public class Valuer {
 
-	int numOfParam = 10;
+	int numOfParam;
 	private double valueLevel = 0; // luong gia cang cao cang gan loi giai
 	private double upgrade[]; // reinforcement learning
 	private long upgradeLen = 1;

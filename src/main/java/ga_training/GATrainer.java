@@ -28,7 +28,7 @@ public class GATrainer {
 	private AiEvolution aiEvolution;
 
 	private int loop = 160;
-	private int lenOfGen = 140;
+	private int lenOfGen = 240;
 	private boolean naturalFitnessScores = true;
 	private boolean cPUprioritize = false;
 	private String selectorValue = SelectionChooser.COINFLIPGAMESELECTION;
@@ -68,7 +68,7 @@ public class GATrainer {
 	private GA_PSO_InOutForm ga_PSO_InOutForm;
 	private PSOsupport psoupport;
 
-	private int numOfParam = 10;
+	private int numOfParam = 20;
 
 	private static ArrayList<Double> metadata;
 
@@ -434,7 +434,6 @@ public class GATrainer {
 		char[] compare2 = String.valueOf(bestResult).toCharArray();
 		boolean flagMatch = true;
 		String UpgradeValuex = "";
-		int step = 0;
 		for (int i = 0; i < compare1.length; i++) {
 			for (int j = 0; j < compare2.length; j++) {
 				if (i == j) {
@@ -442,7 +441,6 @@ public class GATrainer {
 						flagMatch = false;
 						break;
 					}
-					step += 1;
 					UpgradeValuex += String.valueOf(compare2[j]);
 //					System.out.print(" " + String.valueOf(compare2[j]));
 					break;
@@ -723,6 +721,10 @@ public class GATrainer {
 
 	public void setMetadata(ArrayList<Double> metadata) {
 		this.metadata = metadata;
+	}
+
+	public static ArrayList<Double> getMetadata() {
+		return metadata;
 	}
 
 }

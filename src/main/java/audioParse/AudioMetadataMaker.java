@@ -133,6 +133,12 @@ public class AudioMetadataMaker {
 		}
 	}
 
+	public void loadmetadata(int filterRange, Display display) throws IOException {
+		String data = fileIOManager.chooseSingleFile(display);
+		ArrayList<Double> smoothData = fileIOManager.readLineSmoothData(data);
+		filterData = filter.filter(smoothData, filterRange, display);
+	}
+
 	public ArrayList<Double> getMetadata() {
 		return filterData;
 	}

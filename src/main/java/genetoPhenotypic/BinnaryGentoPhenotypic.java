@@ -94,9 +94,8 @@ public class BinnaryGentoPhenotypic {
 
 		long _last = convertFromBinaryToIntDec(last);
 		long _first = convertFromBinaryToIntDec(first);
-		String append = "" + _first + "." + _last;
-		double rawrs = Double.valueOf(append);
-		double rs = (output[len + 1] > 0.5 ? 1 : -1) * rawrs;
+		String fusion = _first + "." + _last;
+		double rs = (output[len + 1] > 0.5 ? 1 : -1) * Double.valueOf(fusion);
 		return rs;
 	}
 

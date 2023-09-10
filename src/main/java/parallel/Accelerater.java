@@ -17,7 +17,7 @@ public class Accelerater {
 	private final int resourceStep = 100;
 	private AiEvolution aiEvolution;
 	private boolean cPUprioritize = true;
-	private final int FORGIVE_TIME = 2;
+	private final int FORGIVE_TIME = 1;
 
 	private StreamInfo sinfo;
 

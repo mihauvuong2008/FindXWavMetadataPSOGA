@@ -63,6 +63,7 @@ public class FindZeroPRLMainWindow {
 	private Label lblValue_1_1_1;
 	private Label label_Varat_2;
 	private Label lblAverage;
+	protected DrawData drawData;
 
 	public FindZeroPRLMainWindow() {
 		// TODO Auto-generated constructor stub
@@ -817,7 +818,7 @@ public class FindZeroPRLMainWindow {
 		label_Varat_1_2.setText("" + trainer.getMakeBestChildgRatio());
 
 		Composite composite_1 = new Composite(shlGaTrainer, SWT.NONE);
-		composite_1.setLayout(new GridLayout(5, false));
+		composite_1.setLayout(new GridLayout(6, false));
 		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
 		Button btnStartTrainning = new Button(composite_1, SWT.NONE);
@@ -882,13 +883,30 @@ public class FindZeroPRLMainWindow {
 		gd_btnTest.widthHint = 85;
 		btnTest.setLayoutData(gd_btnTest);
 		btnTest.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-
+				drawData = new DrawData(Display.getDefault());
+				drawData.setTrainer(trainer);
+				drawData.open();
 			}
 
 		});
 		btnTest.setText("Test");
+
+		Button btnDraw = new Button(composite_1, SWT.NONE);
+		btnDraw.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (drawData.isVisible()) {
+					drawData.redraw();
+				}
+			}
+		});
+		GridData gd_btnDraw = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnDraw.widthHint = 85;
+		btnDraw.setLayoutData(gd_btnDraw);
+		btnDraw.setText("Draw");
 
 		Button btnExit = new Button(composite_1, SWT.NONE);
 		GridData gd_btnExit = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
