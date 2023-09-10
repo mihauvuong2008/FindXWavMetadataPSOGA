@@ -92,6 +92,7 @@ public class FuncNetwork {
 		if (x > maxInput) {
 			return maxOutput + 1;
 		}
+
 		double[] _input = BinaryTransfer.toBinary(x, lenOfInput);
 		System.out.println("BinaryTransfer.toBinary: ");
 		for (double d : _input) {

@@ -31,7 +31,11 @@ public final class BinaryTransfer {
 	}
 
 	static public double[] toBinary(double num, int size) {
-		double Negative = (num > 0 ? 1 : -1);
+		double Negative = 1;
+		if (num < 0) {
+			Negative = -1;
+			num = -num;
+		}
 		String _num = String.valueOf(num);
 		String[] part = _num.split(Pattern.quote("."));
 		if (part.length <= 1) {
