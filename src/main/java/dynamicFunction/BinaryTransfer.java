@@ -1,6 +1,7 @@
 package dynamicFunction;
 
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 public final class BinaryTransfer {
 
@@ -19,8 +20,8 @@ public final class BinaryTransfer {
 	public final static double convertFromBinaryToFloatingPointNegativeDec(double[] output) {
 		int len = output.length - 2;
 		int floatingPoint = (int) (output[len] * len);
-		double[] last = Arrays.copyOfRange(output, 0, floatingPoint);
-		double[] first = Arrays.copyOfRange(output, floatingPoint, len);
+		double[] last = Arrays.copyOfRange(output, floatingPoint, len);
+		double[] first = Arrays.copyOfRange(output, 0, floatingPoint);
 
 		long _last = convertFromBinaryToIntDec(last);
 		long _first = convertFromBinaryToIntDec(first);
@@ -30,27 +31,92 @@ public final class BinaryTransfer {
 	}
 
 	static public double[] toBinary(double num, int size) {
-		String Negative = (num > 0 ? "1" : "-1");
+		double Negative = (num > 0 ? 1 : -1);
 		String _num = String.valueOf(num);
-		String[] part = _num.split(".");
+		String[] part = _num.split(Pattern.quote("."));
+		if (part.length <= 1) {
+			double[] __num = decToBinary((int) num, size - 2);
+			double[] rs = new double[size];
+			System.arraycopy(__num, 0, rs, rs.length - __num.length - 2, __num.length);
+			rs[rs.length - 2] = __num.length / (__num.length + 2);
+			rs[rs.length - 1] = Negative;
+			return rs;
+		}
 		String first = part[0];
 		String last = part[1];
-		double FloatingPoint = first.length() / (_num.length() - 2);
-		int[] _first = toBin(Integer.valueOf(first), size);
-		int[] _last = toBin(Integer.valueOf(last), size);
-		double[] rs = new double[first.length() + last.length() + 2];
-		System.arraycopy(rs, 0, _first, 0, _first.length);
-		System.arraycopy(rs, _first.length, _last, 0, _last.length);
+		double[] _first = decToBinary(Integer.valueOf(first), size);
+		int _lastlength = size - _first.length - 2;
+		int max = (int) Math.pow(2, _lastlength) - 1;
+		System.out.println("max: " + max);
+		if (Integer.valueOf(last) > max) {
+			boolean found = false;
+			boolean rounding = false;
+			String e = "";
+			String[] arr = last.split(Pattern.quote(""));
+			for (int i = 0; i < arr.length - 1; i++) {
+				e += arr[i];
+				int curr = Integer.valueOf(e);
+				int cmp = Integer.valueOf(e + "" + arr[i + 1]);
+				int next = Integer.valueOf(arr[i + 1]);
+				if (next >= 5) {
+					curr++;
+					rounding = true;
+				}
+				if (cmp > max) {
+					last = "" + curr;
+					found = true;
+					break;
+				}
+				if (rounding) {
+					curr--;
+					rounding = false;
+				}
+			}
+			if (!found)
+				last = String.valueOf(max);
+		}
+
+		System.out.println("last: " + last);
+		double[] _last = decToBinary(Integer.valueOf(last), _lastlength);
+		System.out.println("_last length: " + _last.length);
+		double FloatingPoint = (double) _first.length / (double) (size - 2);
+		System.out.println("FloatingPoint: " + FloatingPoint);
+		System.out.println("first: " + first + ", size: " + size);
+		System.out.println("last: " + last);
+		for (int i = 0; i < _first.length; i++) {
+			System.out.print((int) _first[i] + " ");
+		}
+		System.out.println();
+		for (int i = 0; i < _last.length; i++) {
+			System.out.print((int) _last[i] + " ");
+		}
+		System.out.println();
+		double[] rs = new double[size];
+		int dest1 = rs.length - (_first.length + _last.length - 4);
+		System.out.println(dest1 + " " + rs.length + " " + _first.length + " " + _last.length);
+		System.arraycopy(_first, 0, rs, 0, _first.length);
+		System.arraycopy(_last, 0, rs, size - 2 - _last.length, _last.length);
 		rs[rs.length - 2] = FloatingPoint;
-		rs[rs.length - 1] = Double.valueOf(Negative);
+		rs[rs.length - 1] = Negative;
+		for (int i = 0; i < rs.length; i++) {
+			System.out.print(rs[i] + " ");
+		}
 		return rs;
 	}
 
-	static public int[] toBin(int num, int size) {
-		int[] ret = new int[size];
-		for (int i = size, p = 0; i >= 0; i--, p++) {
-			ret[i] = (num / 2 * p) % 2;
+	public static double[] decToBinary(int no, int LenOfGen) {
+		int i = 0, temp[] = new int[LenOfGen];
+		double binary[];
+		while (no > 0) {
+			temp[i++] = (int) (no % 2);
+			no /= 2;
 		}
-		return ret;
+		binary = new double[i];
+		int k = 0;
+		for (int j = i - 1; j >= 0; j--) {
+			binary[k++] = temp[j];
+		}
+		return binary;
 	}
+
 }

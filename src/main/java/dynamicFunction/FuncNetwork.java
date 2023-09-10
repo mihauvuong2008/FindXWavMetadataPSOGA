@@ -2,7 +2,7 @@ package dynamicFunction;
 
 import java.util.ArrayList;
 
-public class funcNetwork {
+public class FuncNetwork {
 	ArrayList<RealNode> inputLayer;
 	ArrayList<RealNode> outLayer;
 	MapLayer mapLayer;
@@ -11,6 +11,8 @@ public class funcNetwork {
 	int lenOfInput;
 	int lenOfOut;
 	int lenOfMapLiner;
+	private int maxInput;
+	private int maxOutput;
 
 	class MapLayer {
 		public int sizeOfMapLiner;
@@ -25,6 +27,7 @@ public class funcNetwork {
 			mapLayer2 = new ArrayList<>();
 			inLine = new ArrayList<>();
 			outLine = new ArrayList<>();
+			mapLiner = new ArrayList<>();
 		}
 
 		void setupMap() {
@@ -45,11 +48,13 @@ public class funcNetwork {
 		}
 	}
 
-	public funcNetwork(int totalConnection, int maxInput, int maxOutput) {
+	public FuncNetwork(int totalConnection, int maxInput, int maxOutput) {
 		super();
+		this.maxInput = maxInput;
+		this.maxOutput = maxOutput;
 		this.totalConnection = totalConnection;
-		lenOfInput = (int) (Math.log(maxInput) / Math.log(2) + (1 - Double.MIN_VALUE));
-		lenOfOut = (int) (Math.log(maxOutput) / Math.log(2) + (1 - Double.MIN_VALUE));
+		lenOfInput = (int) (Math.log10(maxInput) / Math.log10(2) + (1 - Double.MIN_VALUE) + 2/* Negative and point */);
+		lenOfOut = (int) (Math.log10(maxOutput) / Math.log10(2) + (1 - Double.MIN_VALUE));
 		lenOfMapLiner = totalConnection / (lenOfInput + lenOfOut);
 		inputLayer = new ArrayList<>();
 		outLayer = new ArrayList<>();
@@ -84,7 +89,18 @@ public class funcNetwork {
 	}
 
 	public double func(double x) {
+		if (x > maxInput) {
+			return maxOutput + 1;
+		}
+		double[] _input = BinaryTransfer.toBinary(x, lenOfInput);
+		System.out.println("BinaryTransfer.toBinary: ");
+		for (double d : _input) {
+			System.out.print(" " + (int) d);
+		}
 
+		double e = BinaryTransfer.convertFromBinaryToFloatingPointNegativeDec(_input);
+		System.out.println();
+		System.out.println("convertFromBinaryToFloatingPointNegativeDec.toBinary: " + e);
 		double rs = 0;
 		return rs;
 	}
