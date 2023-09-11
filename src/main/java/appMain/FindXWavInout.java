@@ -16,7 +16,7 @@ public final class FindXWavInout {
 				+ (2 * x + Math.pow(3, 2 * x) - 1) / (5 * Math.pow(x, 3) + Math.log10(x) - 1);
 	}
 
-	static DynamicFunction dynamicFunction = new DynamicFunction(30, 40, 100);
+	static DynamicFunction dynamicFunction = new DynamicFunction(20, 34, 100000);
 
 	public static double y(double[] a, int x) {
 

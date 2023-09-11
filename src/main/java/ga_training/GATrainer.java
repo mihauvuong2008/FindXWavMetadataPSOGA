@@ -28,15 +28,15 @@ public class GATrainer {
 	private AiEvolution aiEvolution;
 
 	private int loop = 160;
-	private int lenOfGen = 608;
-	private int numOfParam = 76;
+	private int lenOfGen = 486;
+	private int numOfParam = 54;
 	private boolean naturalFitnessScores = true;
 	private boolean cPUprioritize = false;
 	private String selectorValue = SelectionChooser.COINFLIPGAMESELECTION;
 	Selector selectorChooser;
-	private int firstClasssize = 50000;
-	private int minimumPopsize = 50000;
-	private int maximunPopsize = 60000;
+	private int firstClasssize = 40000;
+	private int minimumPopsize = 30000;
+	private int maximunPopsize = 40000;
 	private double valueLevel = 1;
 	private double makeBestChildgRatio = 0.06;
 	private double makeEverythingRatio = 0.06;

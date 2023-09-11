@@ -7,28 +7,28 @@ public class DynamicFunction {
 	private ArrayList<RealNode> outputLayer;
 	private BodyLayer bodyLayer;
 	private ArrayList<Association> mapLine;
-	private int totalConnection;
+	private int totalAssociationIndex;
 	private int lenOfInput;
 	private int lenOfOut;
-	private int lenOfMapLiner;
+	private int lenOfBody;
 	private int maxInput;
 	private int maxOutput;
 
-	public DynamicFunction(int maxConnection, int maxInput, int maxOutput) {
+	public DynamicFunction(int associationIndex, int maxInput, int maxOutput) {
 		super();
 		this.maxInput = maxInput;
 		this.maxOutput = maxOutput;
-		this.totalConnection = maxConnection;
+		this.totalAssociationIndex = associationIndex;
 		lenOfInput = (int) (Math.log10(maxInput) / Math.log10(2) + (1 - Double.MIN_VALUE) + 2/* Negative and point */);
 		lenOfOut = (int) (Math.log10(maxOutput) / Math.log10(2) + (1 - Double.MIN_VALUE));
-		lenOfMapLiner = (int) getLen() + 1;
+		lenOfBody = (int) getLen() + 1;
 //		System.out.println("lenOfMapLiner: " + lenOfMapLiner);
-		if (lenOfMapLiner < 2)
-			lenOfMapLiner = 2;
+		if (lenOfBody < 2)
+			lenOfBody = 2;
 		inputLayer = new ArrayList<>();
 		outputLayer = new ArrayList<>();
 		mapLine = new ArrayList<>();
-		bodyLayer = new BodyLayer(lenOfMapLiner);
+		bodyLayer = new BodyLayer(lenOfBody);
 
 		int id = 0;
 		for (int i = 0; i < lenOfInput; i++) {
@@ -39,7 +39,7 @@ public class DynamicFunction {
 			outputLayer.add(new RealNode(id));
 			id++;
 		}
-		for (int i = 0; i < bodyLayer.sizeOfMapLiner; i++) {
+		for (int i = 0; i < bodyLayer.lenOfBodyLayer; i++) {
 			bodyLayer.mapLayer1.add(new RealNode(id));
 			id++;
 			bodyLayer.mapLayer2.add(new RealNode(id));
@@ -52,7 +52,9 @@ public class DynamicFunction {
 
 	private double getLen() {
 		int b = (lenOfInput + lenOfOut);
-		double delta = Math.pow(b, 2) + 4 * totalConnection;
+		System.out.println("lenOfInput: " + lenOfInput);
+		System.out.println("lenOfOut: " + lenOfOut);
+		double delta = Math.pow(b, 2) + 4 * totalAssociationIndex;
 		if (delta < 0)
 			return 1;
 		return (-b + Math.pow(delta, 0.5));
@@ -163,12 +165,12 @@ public class DynamicFunction {
 	}
 
 	class BodyLayer {
-		public int sizeOfMapLiner;
+		public int lenOfBodyLayer;
 		public ArrayList<RealNode> mapLayer1;
 		public ArrayList<RealNode> mapLayer2;
 
 		public BodyLayer(int lenOfBodyLayer) {
-			sizeOfMapLiner = lenOfBodyLayer;
+			this.lenOfBodyLayer = lenOfBodyLayer;
 			mapLayer1 = new ArrayList<>();
 			mapLayer2 = new ArrayList<>();
 		}

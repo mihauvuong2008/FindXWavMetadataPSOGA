@@ -12,10 +12,10 @@ public class test {
 //		String s = Long.toBinaryString(11);
 
 		Random r = new Random();
-		DynamicFunction funcNetwork = new DynamicFunction(30, 40, 100);
+		DynamicFunction funcNetwork = new DynamicFunction(20, 34, 100000);
 		System.out.println();
 		int size = funcNetwork.getMapLine().size();
-		System.out.println("size: " + size);
+		System.out.println("size: " + size/* num of GENE */ + " body: " + funcNetwork.getBodyLayer().lenOfBodyLayer);
 		double[] arr = new double[size];
 		for (int i = 0; i < arr.length; i++) {
 			arr[i] = (r.nextBoolean() ? 1 : -1) * r.nextInt(1000) * r.nextDouble();
