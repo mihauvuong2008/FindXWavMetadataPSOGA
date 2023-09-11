@@ -1,13 +1,13 @@
 package ga_training;
 
 public class GENE {
-	private double gene[];
+	private float gene[];
 
-	public double[] getGene() {
+	public float[] getGene() {
 		return gene;
 	}
 
-	public void setGene(double[] gene) {
+	public void setGene(float[] gene) {
 		this.gene = gene;
 	}
 

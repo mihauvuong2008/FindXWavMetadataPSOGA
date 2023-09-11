@@ -28,7 +28,8 @@ public class GATrainer {
 	private AiEvolution aiEvolution;
 
 	private int loop = 160;
-	private int lenOfGen = 240;
+	private int lenOfGen = 608;
+	private int numOfParam = 76;
 	private boolean naturalFitnessScores = true;
 	private boolean cPUprioritize = false;
 	private String selectorValue = SelectionChooser.COINFLIPGAMESELECTION;
@@ -67,8 +68,6 @@ public class GATrainer {
 	private double psoBorder = 20;
 	private GA_PSO_InOutForm ga_PSO_InOutForm;
 	private PSOsupport psoupport;
-
-	private int numOfParam = 20;
 
 	private static ArrayList<Double> metadata;
 
@@ -182,7 +181,7 @@ public class GATrainer {
 
 			if ((isFirstupgradeSolution || flagUpdateResult/* co result moi */) && getAutoUpgradeSolution()
 					&& isHaveUpgradeRatio(upgradecount)/* User yeu cau */) {
-				upgradeSolution();
+//				upgradeSolution();
 				upgradecount = 0;
 				isFirstupgradeSolution = false;
 			}
@@ -332,7 +331,7 @@ public class GATrainer {
 
 		double[] UpgradeValue = aiEvolution.getValuer().getUpgrade(); // update news
 		double Valuelevel = aiEvolution.getValuer().getValueLevel(); // update news
-		double DNAres[] = BinnaryGentoPhenotypic.convertFromBinaryToArrDec(numOfParam,
+		float DNAres[] = BinnaryGentoPhenotypic.convertFromBinaryToArrDec(numOfParam,
 				evaluatedCandidate.getCandidate().getGene());
 		double[] ResultValue = new double[numOfParam];
 		for (int i = 0; i < ResultValue.length; i++) {

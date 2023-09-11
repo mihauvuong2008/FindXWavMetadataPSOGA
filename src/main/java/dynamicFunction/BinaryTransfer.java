@@ -53,7 +53,7 @@ public final class BinaryTransfer {
 		double[] _first = decToBinary(Integer.valueOf(first), size);
 		int _lastlength = size - _first.length - 2;
 		int max = (int) Math.pow(2, _lastlength) - 1;
-		System.out.println("max: " + max);
+//		System.out.println("max: " + max);
 		if (Integer.valueOf(last) > max) {
 			boolean found = false;
 			boolean rounding = false;
@@ -82,31 +82,31 @@ public final class BinaryTransfer {
 				last = String.valueOf(max);
 		}
 
-		System.out.println("last: " + last);
+//		System.out.println("last: " + last);
 		double[] _last = decToBinary(Integer.valueOf(last), _lastlength);
-		System.out.println("_last length: " + _last.length);
+//		System.out.println("_last length: " + _last.length);
 		double FloatingPoint = (double) _first.length / (double) (size - 2);
-		System.out.println("FloatingPoint: " + FloatingPoint);
-		System.out.println("first: " + first + ", size: " + size);
-		System.out.println("last: " + last);
-		for (int i = 0; i < _first.length; i++) {
-			System.out.print((int) _first[i] + " ");
-		}
-		System.out.println();
-		for (int i = 0; i < _last.length; i++) {
-			System.out.print((int) _last[i] + " ");
-		}
-		System.out.println();
+//		System.out.println("FloatingPoint: " + FloatingPoint);
+//		System.out.println("first: " + first + ", size: " + size);
+//		System.out.println("last: " + last);
+//		for (int i = 0; i < _first.length; i++) {
+//			System.out.print((int) _first[i] + " ");
+//		}
+//		System.out.println();
+//		for (int i = 0; i < _last.length; i++) {
+//			System.out.print((int) _last[i] + " ");
+//		}
+//		System.out.println();
 		double[] rs = new double[size];
 		int dest1 = rs.length - (_first.length + _last.length - 4);
-		System.out.println(dest1 + " " + rs.length + " " + _first.length + " " + _last.length);
+//		System.out.println(dest1 + " " + rs.length + " " + _first.length + " " + _last.length);
 		System.arraycopy(_first, 0, rs, 0, _first.length);
 		System.arraycopy(_last, 0, rs, size - 2 - _last.length, _last.length);
 		rs[rs.length - 2] = FloatingPoint;
 		rs[rs.length - 1] = Negative;
-		for (int i = 0; i < rs.length; i++) {
-			System.out.print(rs[i] + " ");
-		}
+//		for (int i = 0; i < rs.length; i++) {
+//			System.out.print(rs[i] + " ");
+//		}
 		return rs;
 	}
 

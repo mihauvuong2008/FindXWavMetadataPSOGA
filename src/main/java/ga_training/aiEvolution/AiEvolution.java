@@ -64,13 +64,13 @@ public class AiEvolution {
 	}
 
 	private GENE Hybrid(GENE gene, GENE gene2, double HybridRatio) {
-		double rt = hybridEvolutionRandom.nextDouble();
+		float rt = hybridEvolutionRandom.nextFloat();
 		if (rt > HybridRatio)
 			return null;
-		double[] DNA1 = gene.getGene();
-		double[] DNA2 = gene2.getGene();
+		float[] DNA1 = gene.getGene();
+		float[] DNA2 = gene2.getGene();
 
-		double[] fusion = new double[lenOfGen];
+		float[] fusion = new float[lenOfGen];
 		for (int i = 0; i < lenOfGen; i++) {
 			fusion[i] = (DNA1[i] + DNA2[i]) / 2;
 		}
@@ -81,15 +81,15 @@ public class AiEvolution {
 	}
 
 	private GENE Defend(GENE gene, GENE gene2, double Defend) {
-		double rt = defendEvolutionRandom.nextDouble();
+		float rt = defendEvolutionRandom.nextFloat();
 		if (rt > Defend)
 			return null;
-		double[] DNA1 = gene.getGene();
-		double[] DNA2 = gene2.getGene();
+		float[] DNA1 = gene.getGene();
+		float[] DNA2 = gene2.getGene();
 
-		double[] Defendend = new double[lenOfGen];
+		float[] Defendend = new float[lenOfGen];
 		for (int i = 0; i < lenOfGen; i++) {
-			double df = (DNA1[i] - DNA2[i]);
+			float df = (DNA1[i] - DNA2[i]);
 			Defendend[i] = Math.abs(df);
 		}
 
@@ -99,25 +99,25 @@ public class AiEvolution {
 	}
 
 	private GENE Mutation(GENE candidate, double mutantRatio) {
-		double rt = mutationEvolutionRandom.nextFloat(); // Double!!??
+		float rt = mutationEvolutionRandom.nextFloat(); // float!!??
 		if (rt > mutantRatio)
 			return candidate;
 		int type = (int) mutationEvolutionRandom.nextInt(3);
-		int knot = (int) (lenOfGen / (3.2 - 1.2 * mutationEvolutionRandom.nextDouble()));
+		int knot = (int) (lenOfGen / (3.2 - 1.2 * mutationEvolutionRandom.nextFloat()));
 		if (type < 0) {
 			// dao doan 1
-			double[] child = candidate.getGene();
+			float[] child = candidate.getGene();
 			for (int i = 0; i < knot; i++) {
-				double tmp = child[i];
+				float tmp = child[i];
 				child[i] = child[lenOfGen - i - 1];
 				child[lenOfGen - i - 1] = tmp;
 			}
 			return candidate;
 		} else if (type < 1) {
 			// dao doan 2
-			double[] child = candidate.getGene();
+			float[] child = candidate.getGene();
 			for (int i = 0; i < knot; i++) {
-				double tmp = child[i];
+				float tmp = child[i];
 				child[i] = child[lenOfGen / 2 + i];
 				child[lenOfGen / 2 + i] = tmp;
 			}
@@ -130,7 +130,7 @@ public class AiEvolution {
 				if (mutationEvolutionRandom.nextBoolean()) {
 					candidate.getGene()[genIdx] = (candidate.getGene()[genIdx] >= 0.5) ? 0 : 1;
 				} else {
-					candidate.getGene()[genIdx] = mutationEvolutionRandom.nextDouble();
+					candidate.getGene()[genIdx] = mutationEvolutionRandom.nextFloat();
 				}
 			}
 			return candidate;
@@ -138,7 +138,7 @@ public class AiEvolution {
 	}
 
 	private void SomaMutation(GENE candidate, double SomaMutationRatio) {
-		double rt = somaMutationEvolutionRandom.nextDouble();
+		float rt = somaMutationEvolutionRandom.nextFloat();
 		if (rt > SomaMutationRatio)
 			return;
 //		System.out.println("rt " + rt + " SomaMutation " + SomaMutationRatio);
@@ -147,15 +147,15 @@ public class AiEvolution {
 		if (somaMutationEvolutionRandom.nextBoolean()) {
 			candidate.getGene()[DNAposi] = (candidate.getGene()[DNAposi] >= 0.5) ? 0 : 1;
 		} else {
-			candidate.getGene()[DNAposi] = somaMutationEvolutionRandom.nextDouble();
+			candidate.getGene()[DNAposi] = somaMutationEvolutionRandom.nextFloat();
 		}
 	}
 
 	private GENE MakeChild(GENE gene, GENE gene2) {
-		double[] DNA1 = gene.getGene();
-		double[] DNA2 = gene2.getGene();
-		double[] childDNA = new double[lenOfGen];
-		int knot = (int) (lenOfGen / (makeChildEvolutionRandom.nextDouble() + 2.5));
+		float[] DNA1 = gene.getGene();
+		float[] DNA2 = gene2.getGene();
+		float[] childDNA = new float[lenOfGen];
+		int knot = (int) (lenOfGen / (makeChildEvolutionRandom.nextFloat() + 2.5));
 		int randomChild = makeChildEvolutionRandom.nextInt(2);
 		if (randomChild == 0) {
 			for (int i = 0; i < lenOfGen; i++) {
@@ -180,12 +180,12 @@ public class AiEvolution {
 	}
 
 	private GENE[] MakeEverything(GENE gene, GENE gene2, GENE gene3, double makeEverythingRatio) {
-		double rt = makeEvythgEvolutionRandom.nextDouble();
+		float rt = makeEvythgEvolutionRandom.nextFloat();
 		if (rt > makeEverythingRatio)
 			return null;
-		double[] DNA1 = gene.getGene();
-		double[] DNA2 = gene2.getGene();
-		double[] DNA3 = gene3.getGene();
+		float[] DNA1 = gene.getGene();
+		float[] DNA2 = gene2.getGene();
+		float[] DNA3 = gene3.getGene();
 		GENE[] result = new GENE[6];
 		int x = 0;
 		for (int i = 1; i < 4; i++) {
@@ -194,7 +194,7 @@ public class AiEvolution {
 					for (int k = 1; k < 4; k++) {
 						if (k != j && k != i) {
 							result[x] = new GENE();
-							double[] gen = new double[lenOfGen];
+							float[] gen = new float[lenOfGen];
 							for (int g = 0; g < lenOfGen; g++) {
 								gen[g] = (i * DNA1[g] + j * DNA2[g] + k * DNA3[g]) / 6;
 							}
@@ -208,25 +208,25 @@ public class AiEvolution {
 		return result;
 	}
 
-//	GENE[] FindBait(GENE gene, double findBaitRatio) {
+//	GENE[] FindBait(GENE gene, float findBaitRatio) {
 //
 //	}
 
-//	GENE[] emulatorMatrix(GENE gene, double findBaitRatio) {
+//	GENE[] emulatorMatrix(GENE gene, float findBaitRatio) {
 //		
 //	}
 // best child
 
 	private GENE MakeBestChild(GENE gene, GENE gene2, double makeBestChildgRatio) {
-		double rt = makeBestChildRandom.nextDouble();
+		float rt = makeBestChildRandom.nextFloat();
 		if (rt > makeBestChildgRatio)
 			return null;
-		double[] DNA1 = gene.getGene();
-		double[] DNA2 = gene2.getGene();
-		double[] childDNA = new double[lenOfGen];
+		float[] DNA1 = gene.getGene();
+		float[] DNA2 = gene2.getGene();
+		float[] childDNA = new float[lenOfGen];
 		for (int i = 0; i < lenOfGen; i++) {
-			double esilon1 = Math.abs(DNA1[i] - 0.5);
-			double esilon2 = Math.abs(DNA2[i] - 0.5);
+			float esilon1 = (float) Math.abs(DNA1[i] - 0.5);
+			float esilon2 = (float) Math.abs(DNA2[i] - 0.5);
 			childDNA[i] = esilon1 > esilon2 ? DNA1[i] : DNA2[i];
 		}
 
@@ -287,14 +287,14 @@ public class AiEvolution {
 		}
 	}
 
-	public ArrayList<GENE> getFirstClass(double firstClass_size) {
+	public ArrayList<GENE> getFirstClass(float firstClass_size) {
 		ArrayList<GENE> rs = new ArrayList<>();
 //		System.out.println(" lenOfGen " + lenOfGen);
 		for (int i = 0; i < firstClass_size; i++) {
 			GENE gene = new GENE();
-			double[] g = new double[lenOfGen];
+			float[] g = new float[lenOfGen];
 			for (int j = 0; j < lenOfGen; j++) {
-				g[j] = firstClassEvolutionRandom.nextDouble();
+				g[j] = firstClassEvolutionRandom.nextFloat();
 			}
 			gene.setGene(g);
 			rs.add(gene);

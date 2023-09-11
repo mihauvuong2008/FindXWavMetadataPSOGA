@@ -58,7 +58,7 @@ public class Valuer {
 	}
 
 	public final double getValue(GENE g, ArrayList<Double> metadata) {
-		double dNAres[] = BinnaryGentoPhenotypic.convertFromBinaryToArrDec(numOfParam, g.getGene());
+		float[] dNAres = BinnaryGentoPhenotypic.convertFromBinaryToArrDec(numOfParam, g.getGene());
 		double[] x = new double[numOfParam];
 		for (int i = 0; i < dNAres.length; i++) {
 			x[i] = FindXWavInout.getUpgradedx(upgrade[i], upgradeLen, dNAres[i]);

@@ -3,7 +3,7 @@ package dynamicFunction;
 public class Association {
 	private RealNode sourceNode;
 	private RealNode destNode;
-	private double weight;
+	private double weight = 1d;
 
 	public RealNode getSourceNode() {
 		return sourceNode;

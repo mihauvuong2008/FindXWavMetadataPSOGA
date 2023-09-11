@@ -74,7 +74,7 @@ public class BinnaryGentoPhenotypic {
 		return negative * ((double) j / 1000000000);
 	}
 
-	public static long convertFromBinaryToIntDec(double[] output) {
+	public static long convertFromBinaryToIntDec(float[] output) {
 		long j = 0;
 		int len = output.length;
 		int _len = len - 1;
@@ -86,11 +86,11 @@ public class BinnaryGentoPhenotypic {
 		return j;
 	}
 
-	public final static double convertFromBinaryToFloatingPointNegativeDec(double[] output) {
+	public final static double convertFromBinaryToFloatingPointNegativeDec(float[] output) {
 		int len = output.length - 2;
 		int floatingPoint = (int) (output[len] * len);
-		double[] last = Arrays.copyOfRange(output, 0, floatingPoint);
-		double[] first = Arrays.copyOfRange(output, floatingPoint, len);
+		float[] last = Arrays.copyOfRange(output, 0, floatingPoint);
+		float[] first = Arrays.copyOfRange(output, floatingPoint, len);
 
 		long _last = convertFromBinaryToIntDec(last);
 		long _first = convertFromBinaryToIntDec(first);
@@ -99,13 +99,13 @@ public class BinnaryGentoPhenotypic {
 		return rs;
 	}
 
-	public final static double[] convertFromBinaryToArrDec(int numOfParam, double[] output) {
+	public final static float[] convertFromBinaryToArrDec(int numOfParam, float[] output) {
 		int len = output.length;
 		int _len = len / numOfParam;
-		double[] rs = new double[numOfParam];
+		float[] rs = new float[numOfParam];
 		for (int i = 0; i < numOfParam; i++) {
-			double[] arr = Arrays.copyOfRange(output, i * _len, (i + 1) * _len);
-			rs[i] = convertFromBinaryToFloatingPointNegativeDec(arr);
+			float[] arr = Arrays.copyOfRange(output, i * _len, (i + 1) * _len);
+			rs[i] = (float) convertFromBinaryToFloatingPointNegativeDec(arr);
 //			System.out.println("arr: " + arr.length + ", len: " + len + ", rs[i]: " + rs[i]);
 		}
 		return rs;

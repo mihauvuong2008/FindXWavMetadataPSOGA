@@ -30,7 +30,7 @@ public class DataAdjuster {
 		sigma = Math.abs(sigma);
 		DecimalFormat df = new DecimalFormat("0.#");
 		df.setMaximumFractionDigits((int) (Range + 0.5));
-		String f = ZERO_PATTERN() + df.format(sigma);
+		String f = ZERO_PATTERN() + df.format(sigma).replace("-", "");
 		String rsStr = f.substring(f.length() - size, f.length());
 		double rs = Double.valueOf(rsStr) / Math.pow(10, size);
 //		System.out.println("sigma " + sigma + " rsStr: " + rsStr + ", rs: " + rs);
