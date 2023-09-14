@@ -7,6 +7,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import ga_training.GATrainer;
+import ga_training.aiEvolution.ValueHands;
 
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -63,16 +64,16 @@ public class DrawData extends Shell {
 				int i = 0;
 
 				for (int j = 0; j < data.size() - 1; j++) {
-					ee.gc.drawLine(j * step, (int) (FindXWavInout.y(a, j) * step) + ZeroPointY, (j + 1) * step,
-							(int) (FindXWavInout.y(a, j + 1) * step) + ZeroPointY);
+					ee.gc.drawLine(j * step, (int) (ValueHands.y(a, j) * step) + ZeroPointY, (j + 1) * step,
+							(int) (ValueHands.y(a, j + 1) * step) + ZeroPointY);
 					ee.gc.drawLine(j * step, (int) (data.get(j) * step) + ZeroPointY, (j + 1) * step,
 							(int) (data.get(j + 1) * step) + ZeroPointY);
 					i++;
 				}
 
 				for (int k = i; k < 200; k++) {
-					ee.gc.drawLine(k * step, (int) (FindXWavInout.y(a, k) * step) + ZeroPointY, (k + 1) * step,
-							(int) (FindXWavInout.y(a, k + 1) * step) + ZeroPointY);
+					ee.gc.drawLine(k * step, (int) (ValueHands.y(a, k) * step) + ZeroPointY, (k + 1) * step,
+							(int) (ValueHands.y(a, k + 1) * step) + ZeroPointY);
 				}
 
 //				e.gc.drawLine(0, 0, clientArea.width, clientArea.height);

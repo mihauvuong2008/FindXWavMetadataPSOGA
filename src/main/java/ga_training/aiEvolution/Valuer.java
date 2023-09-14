@@ -2,7 +2,6 @@ package ga_training.aiEvolution;
 
 import java.util.ArrayList;
 
-import appMain.FindXWavInout;
 import ga_training.GENE;
 import genetoPhenotypic.BinnaryGentoPhenotypic;
 
@@ -61,22 +60,22 @@ public class Valuer {
 		float[] dNAres = BinnaryGentoPhenotypic.convertFromBinaryToArrDec(numOfParam, g.getGene());
 		double[] x = new double[numOfParam];
 		for (int i = 0; i < dNAres.length; i++) {
-			x[i] = FindXWavInout.getUpgradedx(upgrade[i], upgradeLen, dNAres[i]);
+			x[i] = ValueHands.getUpgradedx(upgrade[i], upgradeLen, dNAres[i]);
 //			System.out.println("x[" + i + "]: " + x[i] + ", dNAres[" + i + "]: " + dNAres[i]);
 		}
-		return FindXWavInout.getTotalError(metadata, getValueLevel(), x);
+		return ValueHands.getTotalError(metadata, getValueLevel(), x);
 	}
 
 	public final double getValue(double upgrade, GENE g) {
 		double dNAres = BinnaryGentoPhenotypic.convertFromBinaryToFloatingPointNegativeDec(g.getGene());
-		double x = FindXWavInout.getUpgradedx(upgrade, upgradeLen, dNAres);
-		double y = FindXWavInout.y(x);
-		return FindXWavInout.getUpgradedy(getValueLevel(), y);
+		double x = ValueHands.getUpgradedx(upgrade, upgradeLen, dNAres);
+		double y = ValueHands.y(x);
+		return ValueHands.getUpgradedy(getValueLevel(), y);
 	}
 
 	public final double getpartnerValue(double x) {
-		double y = FindXWavInout.y(x);
-		return FindXWavInout.getUpgradedy(getValueLevel(), y);
+		double y = ValueHands.y(x);
+		return ValueHands.getUpgradedy(getValueLevel(), y);
 	}
 
 	@SuppressWarnings("unused")

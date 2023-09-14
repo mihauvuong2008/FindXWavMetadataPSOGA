@@ -2,8 +2,8 @@ package pso_network.training;
 
 import org.apache.log4j.Logger;
 
-import appMain.FindXWavInout;
 import appMain.GA_PSO_InOutForm;
+import ga_training.aiEvolution.ValueHands;
 import pso_network.Space;
 
 public class PSO_InOut {
@@ -44,7 +44,7 @@ public class PSO_InOut {
 	}
 
 	static public double y(double x) {
-		return FindXWavInout.y(upgrade + x);
+		return ValueHands.y(upgrade + x);
 	}
 
 //	static public double y(double x, int i) {

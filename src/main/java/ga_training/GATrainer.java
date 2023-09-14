@@ -5,9 +5,9 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
-import appMain.FindXWavInout;
 import appMain.GA_PSO_InOutForm;
 import ga_training.aiEvolution.AiEvolution;
+import ga_training.aiEvolution.ValueHands;
 import ga_training.aiEvolution.PlanOfchilds;
 import ga_training.selection.TrippelSelection;
 import genetoPhenotypic.BinnaryGentoPhenotypic;
@@ -335,7 +335,7 @@ public class GATrainer {
 				evaluatedCandidate.getCandidate().getGene());
 		double[] ResultValue = new double[numOfParam];
 		for (int i = 0; i < ResultValue.length; i++) {
-			ResultValue[i] = FindXWavInout.getUpgradedx(UpgradeValue[i], aiEvolution.getValuer().getUpgradeLen(),
+			ResultValue[i] = ValueHands.getUpgradedx(UpgradeValue[i], aiEvolution.getValuer().getUpgradeLen(),
 					DNAres[i]);
 		}
 

@@ -1,13 +1,13 @@
-package appMain;
+package ga_training.aiEvolution;
 
 import java.util.ArrayList;
 
 import dynamicFunction.DynamicFunction;
 
-public final class FindXWavInout {
+public final class ValueHands {
 	private static final double MAX = Double.MAX_VALUE;
 
-	public FindXWavInout() {
+	public ValueHands() {
 		// TODO Auto-generated constructor stub
 	}
 
